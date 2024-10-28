@@ -9,6 +9,11 @@ namespace core.Services.Mappings
         public MappingProfile()
         {
             CreateMap<UserCreatePayload, User>();
+
+            CreateMap<UserUpdatePayload, User>()
+                    .ForAllMembers(opts => opts.Condition(
+                        (src, dest, srcMember) => srcMember is not null
+                    ));
         }
     }
 }

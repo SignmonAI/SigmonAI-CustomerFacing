@@ -32,6 +32,19 @@ namespace core.Services
             return savedUser;
         }
 
+        public async Task<User> UpdateUser(Guid id, UserUpdatePayload payload)
+        {
+            var user = await _repo.FindByIdAsync(id)
+                    ?? throw new Exception("User not found.");
+                
+            _mapper.Map(payload, user);
+
+            var savedUser = await _repo.UpsertAsync(user)
+                    ?? throw new Exception("User could not be updated.");
+            
+            return savedUser;
+        }
+
         private static string HashPassword(User user, string raw)
         {
             var hashedPassword = _passwordHasher.HashPassword(user, raw);
