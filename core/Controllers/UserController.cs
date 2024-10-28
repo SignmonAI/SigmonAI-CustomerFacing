@@ -3,6 +3,7 @@ using core.Data.Queries;
 using core.Repositories;
 using core.Services;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace core.Controllers
 {
@@ -40,7 +41,7 @@ namespace core.Controllers
         {
             var users = await service.FetchManyUsers(pagination);
 
-            return new OkObjectResult(users);
+            return new OkObjectResult(JsonConvert.SerializeObject(users));
         }
 
         [HttpGet]
@@ -51,7 +52,7 @@ namespace core.Controllers
         {
             var user = await service.FetchUser(id);
 
-            return new OkObjectResult(user);
+            return new OkObjectResult(JsonConvert.SerializeObject(user));
         }
     }
 }

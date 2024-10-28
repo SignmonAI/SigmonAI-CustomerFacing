@@ -1,6 +1,6 @@
 namespace core.Data.Queries
 {
-    public readonly record struct PaginationQuery(
+    public record PaginationQuery(
         int Page,
         int Count
     );

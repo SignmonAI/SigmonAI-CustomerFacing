@@ -58,10 +58,8 @@ namespace core.Repositories
                 paginationInfo = new PaginationInfo
                 {
                     Items = totalItems,
-                    CurrentPage = pagination?.Offset / pagination?.Take + 1 ?? 1,
-                    TotalPages = pagination != null
-                            ? (int)Math.Ceiling((double)totalItems / pagination.Value.Take)
-                            : 1
+                    CurrentPage = pagination.Value.Offset / pagination.Value.Take + 1,
+                    TotalPages = (int) Math.Ceiling((double) totalItems / pagination.Value.Take),
                 };
             }
 
