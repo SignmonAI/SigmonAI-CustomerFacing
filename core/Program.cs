@@ -1,6 +1,7 @@
 using AutoMapper;
 using core.Contexts;
 using core.Repositories;
+using core.Services;
 using core.Services.Mappings;
 using Microsoft.EntityFrameworkCore;
 
@@ -43,6 +44,8 @@ namespace core
             services.AddAutoMapper(typeof(MappingProfile));
 
             services.AddScoped<UserRepository>();
+
+            services.AddScoped<UserService>();
 
             services.AddControllers();
 
