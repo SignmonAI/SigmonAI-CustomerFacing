@@ -1,5 +1,6 @@
 using AutoMapper;
 using core.Contexts;
+using core.Middlewares;
 using core.Repositories;
 using core.Services;
 using core.Services.Mappings;
@@ -46,6 +47,9 @@ namespace core
             services.AddScoped<UserRepository>();
 
             services.AddScoped<UserService>();
+
+            services.AddExceptionHandler<ErrorHandlingMiddleware>();
+            services.AddProblemDetails();
 
             services.AddControllers();
 
