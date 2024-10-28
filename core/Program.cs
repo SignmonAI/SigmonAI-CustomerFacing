@@ -1,4 +1,7 @@
+using AutoMapper;
 using core.Contexts;
+using core.Repositories;
+using core.Services.Mappings;
 using Microsoft.EntityFrameworkCore;
 
 namespace core
@@ -36,6 +39,10 @@ namespace core
             services.AddDbContext<SigmonDbContext>(
                 options => options.UseSqlServer(connectionString)
             );
+
+            services.AddAutoMapper(typeof(MappingProfile));
+
+            services.AddScoped<UserRepository>();
 
             services.AddControllers();
 
