@@ -24,6 +24,8 @@ namespace core.Services
             var newUser = new User();
             _mapper.Map(payload, newUser);
 
+            newUser.Password = HashPassword(newUser, newUser.Password);
+
             var savedUser = await _repo.UpsertAsync(newUser)
                     ?? throw new Exception("User could not be inserted.");
             
