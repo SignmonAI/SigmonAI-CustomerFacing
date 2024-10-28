@@ -1,4 +1,5 @@
 using core.Data.Payloads;
+using core.Repositories;
 using core.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -29,6 +30,27 @@ namespace core.Controllers
             var updatedUser = await service.UpdateUser(id, payload);
 
             return new OkObjectResult(updatedUser);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> FetchManyUsers(
+            [FromServices] UserService service,
+            [FromQuery] PaginationOptions pagination)
+        {
+            var users = await service.FetchManyUsers(pagination);
+
+            return new OkObjectResult(users);
+        }
+
+        [HttpGet]
+        [Route("{id}")]
+        public async Task<IActionResult> FetchUser(
+            [FromServices] UserService service,
+            Guid id)
+        {
+            var user = await service.FetchUser(id);
+
+            return new OkObjectResult(user);
         }
     }
 }
