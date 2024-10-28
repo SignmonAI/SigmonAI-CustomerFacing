@@ -1,4 +1,5 @@
 using core.Data.Payloads;
+using core.Data.Queries;
 using core.Repositories;
 using core.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -35,7 +36,7 @@ namespace core.Controllers
         [HttpGet]
         public async Task<IActionResult> FetchManyUsers(
             [FromServices] UserService service,
-            [FromQuery] PaginationOptions pagination)
+            [FromQuery] PaginationQuery pagination)
         {
             var users = await service.FetchManyUsers(pagination);
 

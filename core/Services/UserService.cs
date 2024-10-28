@@ -1,5 +1,6 @@
 using AutoMapper;
 using core.Data.Payloads;
+using core.Data.Queries;
 using core.Errors;
 using core.Models;
 using core.Repositories;
@@ -55,9 +56,10 @@ namespace core.Services
             return user;
         }
 
-        public async Task<(IEnumerable<User>, PaginationInfo?)> FetchManyUsers(PaginationOptions pagination)
+        public async Task<(IEnumerable<User>, PaginationInfo?)> FetchManyUsers(PaginationQuery pagination)
         {
-            var paginatedData = await _repo.FindManyAsync(pagination);
+            var options = pagination.ToOptions();
+            var paginatedData = await _repo.FindManyAsync(options);
             
             if (!paginatedData.Item1.Any())
                 throw new NotFoundException("Couldn't find matching data.");
