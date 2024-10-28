@@ -46,21 +46,21 @@ namespace core.Repositories
             IQueryable<TEntity> query = _rootSet;
             PaginationInfo? paginationInfo = null;
 
-            if (pagination != null)
+            if (pagination is not null)
             {
                 var totalItems = await query.CountAsync();
 
-                if (totalItems <= pagination.Offset)
+                if (totalItems <= pagination.Value.Offset )
                     throw new Exception("Offset exceeds maximum of items.");
 
-                query = query.Skip(pagination.Offset).Take(pagination.Take);
+                query = query.Skip(pagination.Value.Offset).Take(pagination.Value.Take);
 
                 paginationInfo = new PaginationInfo
                 {
                     Items = totalItems,
                     CurrentPage = pagination?.Offset / pagination?.Take + 1 ?? 1,
                     TotalPages = pagination != null
-                            ? (int)Math.Ceiling((double)totalItems / pagination.Take)
+                            ? (int)Math.Ceiling((double)totalItems / pagination.Value.Take)
                             : 1
                 };
             }
