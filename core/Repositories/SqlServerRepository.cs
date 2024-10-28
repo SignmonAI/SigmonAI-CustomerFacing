@@ -74,12 +74,9 @@ namespace core.Repositories
         {
             bool entityExists = await _rootSet.AnyAsync(e => e.Id.Equals(entity.Id));
 
-            TEntity? foundEntity = entityExists
-                    ? await _rootSet.SingleOrDefaultAsync(e => e.Id.Equals(entity.Id))
+            TEntity foundEntity = entityExists
+                    ? await _rootSet.SingleAsync(e => e.Id.Equals(entity.Id))
                     : _rootSet.Add(entity).Entity;
-            
-            if (foundEntity is null)
-                throw new InvalidDataException($"Invalid state for {entity.GetType().FullName} entity. State: {JsonConvert.SerializeObject(entity)}");
             
             _context.Entry(foundEntity).CurrentValues.SetValues(foundEntity);
 

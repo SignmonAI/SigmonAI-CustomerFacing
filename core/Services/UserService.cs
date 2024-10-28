@@ -1,5 +1,6 @@
 using AutoMapper;
 using core.Data.Payloads;
+using core.Errors;
 using core.Models;
 using core.Repositories;
 using Microsoft.AspNetCore.Identity;
@@ -27,7 +28,7 @@ namespace core.Services
             newUser.Password = HashPassword(newUser, newUser.Password);
 
             var savedUser = await _repo.UpsertAsync(newUser)
-                    ?? throw new Exception("User could not be inserted.");
+                    ?? throw new UpsertFailException("User could not be inserted.");
             
             return savedUser;
         }
@@ -35,12 +36,12 @@ namespace core.Services
         public async Task<User> UpdateUser(Guid id, UserUpdatePayload payload)
         {
             var user = await _repo.FindByIdAsync(id)
-                    ?? throw new Exception("User not found.");
+                    ?? throw new NotFoundException("User not found.");
                 
             _mapper.Map(payload, user);
 
             var savedUser = await _repo.UpsertAsync(user)
-                    ?? throw new Exception("User could not be updated.");
+                    ?? throw new UpsertFailException("User could not be updated.");
             
             return savedUser;
         }
