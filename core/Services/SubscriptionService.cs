@@ -17,14 +17,7 @@ namespace core.Services
             _mapper = mapper;
         }
 
-        public async Task<Subscription> GetByUserId(Guid userId)
-        {
-            var (subscriptions, _) = await _repo.FindManyAsync();
-
-            var subscription = subscriptions.FirstOrDefault(sub => sub.User!.Id == userId) ?? throw new NotFoundException("User not found.");
-
-            return subscription;
-        }
+        public async Task<Subscription> GetByUserId(Guid userId) => await _repo.FindByUserIdAsync(userId) ?? throw new NotFoundException("User not found.");
 
         public async Task<Subscription> CreateSubscription(SubscriptionCreatePayload payload)
         {
