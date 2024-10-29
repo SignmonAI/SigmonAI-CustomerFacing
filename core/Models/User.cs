@@ -16,5 +16,7 @@ namespace core.Models
 
         [Column("password", TypeName = "varchar(255)")]
         public string? Password { get; set; }
+
+        public Subscription? Subscription { get; set; }
     }
 }
