@@ -8,6 +8,28 @@ namespace core.Controllers
     [Route("api/v1/bills")]
     public class BillController : ControllerBase
     {
+        [HttpGet]
+        [Route("{id}")]
+        public async Task<IActionResult> GetBillById(
+            [FromServices] BillService service,
+            Guid id)
+        {
+            var bill = await service.GetById(id);
+
+            return Ok(bill);
+        }
+
+        [HttpGet]
+        [Route("subscription/{id}")]
+        public async Task<IActionResult> GetBillBySubscriptionId(
+            [FromServices] BillService service,
+            Guid subscriptionId)
+        {
+            var bills = await service.GetBySubscriptionId(subscriptionId);
+
+            return Ok(bills);
+        }
+
         [HttpPost]
         [Route("register")]
         public async Task<IActionResult> RegisterBill(

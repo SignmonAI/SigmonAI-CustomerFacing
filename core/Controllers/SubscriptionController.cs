@@ -8,6 +8,18 @@ namespace core.Controllers
     [Route("api/v1/subscriptions")]
     public class SubscriptionController : ControllerBase
     {
+
+        [HttpGet]
+        [Route("user/{userId}")]
+        public async Task<IActionResult> GetSubscriptionByUserId(
+            [FromServices] SubscriptionService service,
+            Guid userId)
+        {
+            var subscription = await service.GetByUserId(userId);
+
+            return Ok(subscription);
+        }
+
         [HttpPost]
         [Route("register")]
         public async Task<IActionResult> RegisterSubscription(
