@@ -15,7 +15,6 @@ namespace core.Services.Mappings
                         (src, dest, srcMember) => srcMember is not null
                     ));
 
-
             CreateMap<SubscriptionCreatePayload, Subscription>();
 
             CreateMap<BillCreatePayload, Bill>();
