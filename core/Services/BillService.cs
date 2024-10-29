@@ -17,6 +17,17 @@ namespace core.Services
             _mapper = mapper;
         }
 
+        public async Task<Bill> GetById(Guid id) => await _repo.FindByIdAsync(id) ?? throw new NotFoundException("Bill not found.");
+
+        public async Task<IEnumerable<Bill>> GetBySubscriptionId(Guid subscriptionId)
+        {
+            var (bills, _) = await _repo.FindManyAsync();
+
+            var subscriptionBills = bills.Where(b => b.Subscription!.Id == subscriptionId) ?? throw new NotFoundException("Subscription not found.");
+
+            return subscriptionBills;
+        }
+
         public async Task<Bill> CreateBill(BillCreatePayload payload)
         {
             var newBill = new Bill();
