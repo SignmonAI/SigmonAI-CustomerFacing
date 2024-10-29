@@ -48,6 +48,14 @@ namespace core
 
             services.AddScoped<UserService>();
 
+            services.AddScoped<MediaRepository>();
+
+            services.AddScoped<MediaService>();
+
+            services.AddScoped<RequestRepository>();
+
+            services.AddScoped<RequestService>();
+
             services.AddExceptionHandler<ErrorHandlingMiddleware>();
             services.AddProblemDetails();
 

@@ -11,6 +11,15 @@ namespace core.Contexts
 
         protected override void OnModelCreating(ModelBuilder model)
         {
+            #region User
+
+            model.Entity<User>()
+                .HasOne(u => u.Subscription)
+                .WithOne(s => s.User)
+                .HasForeignKey<Subscription>(s => s.UserId);
+
+            #endregion
+
             #region Subscription
 
             model.Entity<Subscription>()

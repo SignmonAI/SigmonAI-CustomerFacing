@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using core.Contexts;
 
@@ -11,9 +12,11 @@ using core.Contexts;
 namespace core.Migrations
 {
     [DbContext(typeof(SigmonDbContext))]
-    partial class SigmonDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241029192748_UpdatingMedia")]
+    partial class UpdatingMedia
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
