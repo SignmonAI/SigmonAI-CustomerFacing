@@ -2,15 +2,17 @@ using core.Repositories;
 
 namespace core.Data.Outbound
 {
-    public readonly record struct OutboundUser(
-        Guid Id,
-        string Name,
-        string Email,
-        string Phone
-    );
+    public class OutboundUser
+    {
+        public Guid Id { get; set; }
+        public string? Name { get; set; }
+        public string? Email { get; set; }
+        public string? Phone { get; set; }
+    };
 
-    public readonly record struct OutboundPaginatedUsers(
-        IEnumerable<OutboundUser> Users,
-        PaginationInfo Pagination
-    );
+    public class OutboundPaginatedUsers
+    {
+        public IEnumerable<OutboundUser>? Users { get; set; } = null;
+        public PaginationInfo? Pagination { get; set; } = null;
+    };
 }

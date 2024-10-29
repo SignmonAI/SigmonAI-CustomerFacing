@@ -33,7 +33,13 @@ namespace core.Services.Mappings
         {
             CreateMap<User, OutboundUser>();
 
-            CreateMap<(IEnumerable<User>, PaginationInfo?), OutboundPaginatedUsers>();
+            CreateMap<(IEnumerable<User>, PaginationInfo?), OutboundPaginatedUsers>()
+                    .ForMember(
+                        dest => dest.Users,
+                        opt => opt.MapFrom(src => src.Item1))
+                    .ForMember(
+                        dest => dest.Pagination,
+                        opt => opt.MapFrom(src => src.Item2));
         }
     }
 }

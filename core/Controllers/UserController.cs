@@ -1,3 +1,5 @@
+using AutoMapper;
+using core.Data.Outbound;
 using core.Data.Payloads;
 using core.Data.Queries;
 using core.Repositories;
@@ -11,6 +13,13 @@ namespace core.Controllers
     [Route("api/v1/users")]
     public class UserController : ControllerBase
     {
+        private IMapper _mapper;
+
+        public UserController(IMapper mapper)
+        {
+            _mapper = mapper;
+        }
+
         [HttpPost]
         [Route("register")]
         public async Task<IActionResult> RegisterUser(
@@ -19,7 +28,10 @@ namespace core.Controllers
         {
             var createdUser = await service.CreateUser(payload);
             
-            return Created("/api/v1/users/register", createdUser);
+            var result = new OutboundUser();
+            _mapper.Map(createdUser, result);
+
+            return Created("/api/v1/users/register", result);
         }
 
         [HttpPatch]
@@ -31,7 +43,10 @@ namespace core.Controllers
         {
             var updatedUser = await service.UpdateUser(id, payload);
 
-            return new OkObjectResult(updatedUser);
+            var result = new OutboundUser();
+            _mapper.Map(updatedUser, result);
+
+            return new OkObjectResult(result);
         }
 
         [HttpGet]
@@ -41,7 +56,10 @@ namespace core.Controllers
         {
             var users = await service.FetchManyUsers(pagination);
 
-            return new OkObjectResult(JsonConvert.SerializeObject(users));
+            var result = new OutboundPaginatedUsers();
+            _mapper.Map(users, result);
+
+            return new OkObjectResult(JsonConvert.SerializeObject(result));
         }
 
         [HttpGet]
@@ -52,7 +70,10 @@ namespace core.Controllers
         {
             var user = await service.FetchUser(id);
 
-            return new OkObjectResult(JsonConvert.SerializeObject(user));
+            var result = new OutboundUser();
+            _mapper.Map(user, result);
+
+            return new OkObjectResult(JsonConvert.SerializeObject(result));
         }
     }
 }
