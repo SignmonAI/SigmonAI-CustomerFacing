@@ -3,7 +3,6 @@ using core.Data.Payloads;
 using core.Errors;
 using core.Models;
 using core.Repositories;
-using Microsoft.AspNetCore.Identity;
 
 namespace core.Services
 {
@@ -28,18 +27,18 @@ namespace core.Services
             return savedSubscription;
         }
 
-        public async Task DeleteSubscription(Guid subscriptionId)
+        public async Task DeleteSubscription(Guid id)
         {
-            var exists = await _repo.ExistsAsync(subscriptionId);
+            var exists = await _repo.ExistsAsync(id);
 
             if (!exists)
                 throw new NotFoundException("Subscription not found.");
 
-            var deleted = await _repo.DeleteByIdAsync(subscriptionId);
+            var deleted = await _repo.DeleteByIdAsync(id);
 
             if (!deleted)
                 throw new DeleteException("Subscription couldn't be deleted.");
-                
+
         }
     }
 }

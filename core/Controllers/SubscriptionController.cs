@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace core.Controllers
 {
     [ApiController]
-    [Route("api/v1/subscription")]
+    [Route("api/v1/subscriptions")]
     public class SubscriptionController : ControllerBase
     {
         [HttpPost]
@@ -21,12 +21,12 @@ namespace core.Controllers
 
         [HttpDelete]
         [Route("{id}")]
-        public async Task<IActionResult> UpdateUser(
+        public async Task<IActionResult> DeleteSubscription(
             [FromServices] SubscriptionService service,
             Guid id)
         {
             await service.DeleteSubscription(id);
-            return NoContent();
+            return Ok();
         }
     }
 }

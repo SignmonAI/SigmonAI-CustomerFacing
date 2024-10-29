@@ -17,6 +17,13 @@ namespace core.Services.Mappings
 
 
             CreateMap<SubscriptionCreatePayload, Subscription>();
+
+            CreateMap<BillCreatePayload, Bill>();
+
+            CreateMap<BillUpdatePayload, Bill>()
+                    .ForAllMembers(opts => opts.Condition(
+                        (src, dest, srcMember) => srcMember is not null
+                    ));
         }
     }
 }
