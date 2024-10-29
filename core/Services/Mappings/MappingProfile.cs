@@ -1,6 +1,8 @@
 using AutoMapper;
+using core.Data.Outbound;
 using core.Data.Payloads;
 using core.Models;
+using core.Repositories;
 
 namespace core.Services.Mappings
 {
@@ -15,7 +17,6 @@ namespace core.Services.Mappings
                         (src, dest, srcMember) => srcMember is not null
                     ));
 
-
             CreateMap<SubscriptionCreatePayload, Subscription>();
 
             CreateMap<BillCreatePayload, Bill>();
@@ -24,6 +25,21 @@ namespace core.Services.Mappings
                     .ForAllMembers(opts => opts.Condition(
                         (src, dest, srcMember) => srcMember is not null
                     ));
+        
+            OutboundMapping();
+        }
+
+        private void OutboundMapping()
+        {
+            CreateMap<User, OutboundUser>();
+
+            CreateMap<(IEnumerable<User>, PaginationInfo?), OutboundPaginatedUsers>()
+                    .ForMember(
+                        dest => dest.Users,
+                        opt => opt.MapFrom(src => src.Item1))
+                    .ForMember(
+                        dest => dest.Pagination,
+                        opt => opt.MapFrom(src => src.Item2));
         }
     }
 }
