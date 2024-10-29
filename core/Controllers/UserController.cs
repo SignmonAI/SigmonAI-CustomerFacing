@@ -1,6 +1,9 @@
 using core.Data.Payloads;
+using core.Data.Queries;
+using core.Repositories;
 using core.Services;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace core.Controllers
 {
@@ -29,6 +32,27 @@ namespace core.Controllers
             var updatedUser = await service.UpdateUser(id, payload);
 
             return new OkObjectResult(updatedUser);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> FetchManyUsers(
+            [FromServices] UserService service,
+            [FromQuery] PaginationQuery pagination)
+        {
+            var users = await service.FetchManyUsers(pagination);
+
+            return new OkObjectResult(JsonConvert.SerializeObject(users));
+        }
+
+        [HttpGet]
+        [Route("{id}")]
+        public async Task<IActionResult> FetchUser(
+            [FromServices] UserService service,
+            Guid id)
+        {
+            var user = await service.FetchUser(id);
+
+            return new OkObjectResult(JsonConvert.SerializeObject(user));
         }
     }
 }

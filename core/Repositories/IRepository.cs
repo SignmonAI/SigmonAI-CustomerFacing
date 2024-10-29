@@ -2,10 +2,10 @@ using core.Models.Seed;
 
 namespace core.Repositories
 {
-    public class PaginationOptions
+    public readonly record struct PaginationOptions
     {
-        public int Offset { get; set; }
-        public int Take { get; set; }
+        public required int Offset { get; init; }
+        public required int Take { get; init; }
     }
 
     public class PaginationInfo

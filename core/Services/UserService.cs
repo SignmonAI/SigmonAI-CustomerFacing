@@ -1,9 +1,11 @@
 using AutoMapper;
 using core.Data.Payloads;
+using core.Data.Queries;
 using core.Errors;
 using core.Models;
 using core.Repositories;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 
 namespace core.Services
 {
@@ -44,6 +46,25 @@ namespace core.Services
                     ?? throw new UpsertFailException("User could not be updated.");
             
             return savedUser;
+        }
+
+        public async Task<User> FetchUser(Guid id)
+        {
+            var user = await _repo.FindByIdAsync(id)
+                    ?? throw new NotFoundException("User not found.");
+            
+            return user;
+        }
+
+        public async Task<(IEnumerable<User>, PaginationInfo?)> FetchManyUsers(PaginationQuery pagination)
+        {
+            var options = pagination.ToOptions();
+            var paginatedData = await _repo.FindManyAsync(options);
+            
+            if (!paginatedData.Item1.Any())
+                throw new NotFoundException("Couldn't find matching data.");
+            
+            return paginatedData;
         }
 
         private static string HashPassword(User user, string raw)
