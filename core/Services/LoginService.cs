@@ -1,23 +1,43 @@
 using core.Data.Outbound;
 using core.Data.Payloads;
 using core.Errors;
+using core.Models;
 using core.Repositories;
+using Microsoft.AspNetCore.Identity;
 
 namespace core.Services
 {
     public class LoginService
     {
-        private UserRepository _repo
+        private readonly UserRepository _repo;
+        private readonly PasswordHasher<User> _hasher = new();
 
         public LoginService(UserRepository repo)
         {
             _repo = repo;
         }
 
-        public Task<LoginResult> TryLogin(LoginPayload payload)
+        public async Task<LoginResult> TryLogin(LoginPayload payload)
         {
-            var user = _repo.FindByEmailAsync(payload.Email)
-                    ?? throw new AuthenticationException("")
+            var user = await _repo.FindByEmailAsync(payload.Email)
+                    ?? throw new NotFoundException("User with this email not found.");
+
+            var verification = _hasher.VerifyHashedPassword(
+                user,
+                user.Password,
+                payload.Password);
+            
+            bool emailMatches = user.Email.Equals(payload.Email);
+            bool passwordMatches = verification switch
+            {
+                PasswordVerificationResult.Success => true,
+                _ => false,
+            };
+
+            if (!emailMatches || !passwordMatches)
+                return new LoginResult.Failed();
+            
+            return new LoginResult.Succeeded(user.Id);
         }
     }
 }
