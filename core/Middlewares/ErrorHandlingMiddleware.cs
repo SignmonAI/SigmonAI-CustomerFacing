@@ -14,9 +14,9 @@ namespace core.Middlewares
         {
             var error = exception switch
             {
-                // AuthenticationException e => new Error(StatusCodes.Status400BadRequest, e.Message, e.Failure),
-                // InvalidHeadersException e => new Error(StatusCodes.Status400BadRequest, e.Message),
-                // InvalidTokenException e => new Error(StatusCodes.Status400BadRequest, e.Message),
+                AuthenticationException e => new Error(StatusCodes.Status400BadRequest, e.Message, e.Failure),
+                InvalidHeadersException e => new Error(StatusCodes.Status400BadRequest, e.Message),
+                InvalidTokenException e => new Error(StatusCodes.Status400BadRequest, e.Message),
                 DeleteException e => new Error(StatusCodes.Status500InternalServerError, e.Message),
                 NotFoundException e => new Error(StatusCodes.Status404NotFound, e.Message),
                 UpsertFailException e => new Error(StatusCodes.Status500InternalServerError, e.Message),
