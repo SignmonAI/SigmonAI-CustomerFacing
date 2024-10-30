@@ -33,7 +33,7 @@ namespace core.Services.Mappings
                         (src, dest, srcMember) => srcMember is not null
                     ));
 
-            CreateMap<CreateTierPayload, Tier>();
+            CreateMap<TierCreatePayload, Tier>();
         
             OutboundMapping();
         }

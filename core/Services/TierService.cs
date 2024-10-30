@@ -19,7 +19,7 @@ namespace core.Services
             _mapper = mapper;
         }
 
-        public async Task<OutboundTier> CreateTier(CreateTierPayload payload)
+        public async Task<OutboundTier> CreateTier(TierCreatePayload payload)
         {
             var newTier = new Tier();
             _mapper.Map(payload, newTier);
