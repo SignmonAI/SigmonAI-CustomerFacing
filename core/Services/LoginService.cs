@@ -37,7 +37,11 @@ namespace core.Services
             if (!emailMatches || !passwordMatches)
                 return new LoginResult.Failed();
             
-            return new LoginResult.Succeeded(user.Id);
+            return new LoginResult.Succeeded()
+            {
+                UserId = user.Id,
+                UserName = user.Name
+            };
         }
     }
 }
