@@ -37,7 +37,7 @@ namespace core.Services
             };
 
             var SecToken = new JwtSecurityToken(
-                "ETStream",
+                "Sigmon AI",
                 audience: null,
                 claims: claims,
                 expires: DateTime.Now.AddHours(8),
