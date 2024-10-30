@@ -9,18 +9,12 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace core.Services
 {
-    public class UserService
+    public class UserService(UserRepository repo, IMapper mapper)
     {
-        private readonly UserRepository _repo;
-        private readonly IMapper _mapper;
+        private readonly UserRepository _repo = repo;
+        private readonly IMapper _mapper = mapper;
 
         private static readonly PasswordHasher<User> _passwordHasher = new();
-
-        public UserService(UserRepository repo, IMapper mapper)
-        {
-            _repo = repo;
-            _mapper = mapper;
-        }
 
         public async Task<User> CreateUser(UserCreatePayload payload)
         {

@@ -30,6 +30,14 @@ namespace core.Contexts
                     .WithMany(s => s.Bills);
 
             #endregion
+
+            #region Country
+
+            model.Entity<Country>()
+                .HasIndex(c => c.PhoneCode)
+                .IsUnique();
+
+            #endregion
         }
     }
 }

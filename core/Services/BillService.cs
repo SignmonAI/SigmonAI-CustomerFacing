@@ -6,16 +6,10 @@ using core.Repositories;
 
 namespace core.Services
 {
-    public class BillService
+    public class BillService(BillRepository repo, IMapper mapper)
     {
-        private readonly BillRepository _repo;
-        private readonly IMapper _mapper;
-
-        public BillService(BillRepository repo, IMapper mapper)
-        {
-            _repo = repo;
-            _mapper = mapper;
-        }
+        private readonly BillRepository _repo = repo;
+        private readonly IMapper _mapper = mapper;
 
         public async Task<Bill> GetById(Guid id) => await _repo.FindByIdAsync(id) ?? throw new NotFoundException("Bill not found.");
 
