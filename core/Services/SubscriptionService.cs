@@ -6,25 +6,12 @@ using core.Repositories;
 
 namespace core.Services
 {
-    public class SubscriptionService
+    public class SubscriptionService(SubscriptionRepository repo, IMapper mapper)
     {
-        private readonly SubscriptionRepository _repo;
-        private readonly IMapper _mapper;
+        private readonly SubscriptionRepository _repo = repo;
+        private readonly IMapper _mapper = mapper;
 
-        public SubscriptionService(SubscriptionRepository repo, IMapper mapper)
-        {
-            _repo = repo;
-            _mapper = mapper;
-        }
-
-        public async Task<Subscription> GetByUserId(Guid userId)
-        {
-            var (subscriptions, _) = await _repo.FindManyAsync();
-
-            var subscription = subscriptions.FirstOrDefault(sub => sub.User!.Id == userId) ?? throw new NotFoundException("User not found.");
-
-            return subscription;
-        }
+        public async Task<Subscription> GetByUserId(Guid userId) => await _repo.FindByUserIdAsync(userId) ?? throw new NotFoundException("User not found.");
 
         public async Task<Subscription> CreateSubscription(SubscriptionCreatePayload payload)
         {

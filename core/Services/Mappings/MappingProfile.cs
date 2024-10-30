@@ -25,6 +25,13 @@ namespace core.Services.Mappings
                     .ForAllMembers(opts => opts.Condition(
                         (src, dest, srcMember) => srcMember is not null
                     ));
+
+            CreateMap<CountryCreatePayload, Country>();
+
+            CreateMap<CountryUpdatePayload, Country>()
+                    .ForAllMembers(opts => opts.Condition(
+                        (src, dest, srcMember) => srcMember is not null
+                    ));
         
             OutboundMapping();
         }
