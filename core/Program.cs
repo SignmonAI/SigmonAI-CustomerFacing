@@ -50,7 +50,8 @@ namespace core
             // JWT authentication configuration
             var jwtSettings = new JwtSettings()
             {
-                SecretKey = configuration.GetSection("JwtSettings").GetValue<string>("SecretKey")!
+                SecretKey = configuration.GetSection("JwtSettings")
+                        .GetValue<string>("SecretKey")!
             };
             services.AddSingleton(jwtSettings);
             services.AddSingleton<JwtSecurityTokenHandler>();
