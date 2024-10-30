@@ -39,7 +39,9 @@ namespace core
             app.Run();
         }
 
-        private static void ConfigureServices(IServiceCollection services, IConfigurationManager configuration)
+        private static void ConfigureServices(
+                IServiceCollection services,
+                ConfigurationManager configuration)
         {
             // Database context configuration
             var connectionString = configuration.GetConnectionString("SqlServer");
