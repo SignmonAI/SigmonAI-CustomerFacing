@@ -14,7 +14,7 @@ namespace core.Controllers
             [FromServices] CountryService service,
             Guid id)
         {
-            var country = service.GetById(id);
+            var country = await service.GetById(id);
 
             return Ok(country);
         }
