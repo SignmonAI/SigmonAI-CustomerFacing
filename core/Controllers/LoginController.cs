@@ -12,14 +12,15 @@ namespace core.Controllers
     {
         [HttpPost]
         public async Task<IActionResult> TryLogin(
-                [FromServices] LoginService service,
+                [FromServices] LoginService loginService,
+                [FromServices] JwtService jwtService,
                 [FromBody] LoginPayload payload)
         {
-            var result = await service.TryLogin(payload);
+            var result = await loginService.TryLogin(payload);
 
             return result switch
             {
-                LoginResult.Succeeded => new OkObjectResult(result),
+                LoginResult.Succeeded s => new OkObjectResult(jwtService.GenerateToken(s)),
                 LoginResult.Failed => Unauthorized(),
                 _ => throw new UnknownServerError(),
             };

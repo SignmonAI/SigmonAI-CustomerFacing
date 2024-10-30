@@ -28,7 +28,7 @@ namespace core.Services
             _credentials = new SigningCredentials(_securityKey, SecurityAlgorithms.HmacSha512);
         }
 
-        public string GenerateToken(LoginResult.Succeeded auth)
+        public OutboundToken GenerateToken(LoginResult.Succeeded auth)
         {
             var claims = new List<Claim>
             {
@@ -44,7 +44,8 @@ namespace core.Services
                 signingCredentials: _credentials);
             
             var token = _tokenHandler.WriteToken(SecToken);
-            return token!;
+
+            return new OutboundToken(token);
         }
 
         public void ValidateToken(string jwt)

@@ -65,8 +65,13 @@ namespace core
             // Repositories configuration
             services.AddScoped<UserRepository>();
 
-            // Services layer configuration
+            // Services layer registration
             services.AddScoped<UserService>();
+            services.AddScoped<JwtService>();
+            services.AddScoped<LoginService>();
+
+            // Middlewares registration
+            services.AddTransient<AuthenticationMiddleware>();
 
             // Exception handling configuration
             services.AddExceptionHandler<ErrorHandlingMiddleware>();
