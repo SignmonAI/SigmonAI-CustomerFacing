@@ -8,8 +8,11 @@ namespace core.Models
         public Guid UserId { get; set; }
         public User? User { get; set; }
 
+        public Tier tier { get; set; }
+
         [Column("payment_due", TypeName = "decimal(5, 4)")]
         public double? PaymentDue { get; set; }
+
         public ICollection<Bill> Bills { get; set; } = [];
     }
 }
