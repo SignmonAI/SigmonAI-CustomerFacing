@@ -34,6 +34,10 @@ namespace core.Services.Mappings
                     ));
 
             CreateMap<TierCreatePayload, Tier>();
+
+            CreateMap<TierUpdatePayload, Tier>()
+                    .ForAllMembers(opts => opts.Condition(
+                        (src, dest, srcMember) => srcMember is not null));
         
             OutboundMapping();
         }

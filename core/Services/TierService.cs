@@ -1,6 +1,7 @@
 using AutoMapper;
 using core.Data.Outbound;
 using core.Data.Payloads;
+using core.Errors;
 using core.Models;
 using core.Repositories;
 
@@ -27,12 +28,27 @@ namespace core.Services
             var currentMaxNumber = await _repo.FindMaxTierNumber();
             newTier.ModelNumber = (short)(currentMaxNumber + 1);
 
-            var savedTier = await _repo.UpsertAsync(newTier);
+            var savedTier = await _repo.UpsertAsync(newTier)
+                    ?? throw new UpsertFailException("New subscription tier could not be inserted.");
 
-            var result = new OutboundTier();
-            _mapper.Map(savedTier, result);
-
-            return result;
+            return EntityToResult(savedTier);
         }
+
+        public async Task<OutboundTier> UpdateTier(
+                Guid id,
+                TierUpdatePayload payload)
+        {
+            var tier = await _repo.FindByIdAsync(id)
+                    ?? throw new NotFoundException("Subscription tier not found.");
+
+            _mapper.Map(payload, tier);
+
+            var savedTier = await _repo.UpsertAsync(tier)
+                    ?? throw new UpsertFailException("Subscription tier could not be inserted.");
+                
+            return EntityToResult(savedTier);
+        }
+
+        private OutboundTier EntityToResult(Tier entity) => _mapper.Map<OutboundTier>(entity);
     }
 }
