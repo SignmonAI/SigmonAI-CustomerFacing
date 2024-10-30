@@ -33,13 +33,19 @@ namespace core.Services.Mappings
                         (src, dest, srcMember) => srcMember is not null
                     ));
 
+            CreateMap<TierCreatePayload, Tier>();
+
+            CreateMap<TierUpdatePayload, Tier>()
+                    .ForAllMembers(opts => opts.Condition(
+                        (src, dest, srcMember) => srcMember is not null));
+        
             CreateMap<LanguageCreatePayload, Language>();
 
             CreateMap<LanguageUpdatePayload, Language>()
                     .ForAllMembers(opts => opts.Condition(
                         (src, dest, srcMember) => srcMember is not null
                     ));
-        
+
             OutboundMapping();
         }
 
