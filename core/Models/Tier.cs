@@ -10,9 +10,9 @@ namespace core.Models
         public string ModelDescription { get; set; }
 
         [Column("model_number", TypeName = "tinyint")]
-        Int16 ModelNumber { get; set; }
+        public short ModelNumber { get; set; }
 
         [Column("base_pricing", TypeName = "decimal(5, 4)")]
-        float BasePricing { get; set; }
+        public float BasePricing { get; set; }
     }
 }

@@ -24,6 +24,9 @@ namespace core.Services
             var newTier = new Tier();
             _mapper.Map(payload, newTier);
 
+            var currentMaxNumber = await _repo.FindMaxTierNumber();
+            newTier.ModelNumber = (short)(currentMaxNumber + 1);
+
             var savedTier = await _repo.UpsertAsync(newTier);
 
             var result = new OutboundTier();
