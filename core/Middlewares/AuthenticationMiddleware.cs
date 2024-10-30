@@ -3,11 +3,11 @@ using core.Services;
 
 namespace core.Middlewares
 {
-    public class AuthenticationMiddelware : IMiddleware
+    public class AuthenticationMiddleware : IMiddleware
     {
         private JwtService _jwtService;
 
-        public AuthenticationMiddelware(JwtService jwtService)
+        public AuthenticationMiddleware(JwtService jwtService)
         {
             _jwtService = jwtService;
         }
