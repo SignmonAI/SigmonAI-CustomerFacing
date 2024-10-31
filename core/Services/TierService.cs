@@ -7,18 +7,12 @@ using core.Repositories;
 
 namespace core.Services
 {
-    public class TierService
+    public class TierService(
+            TierRepository repo,
+            IMapper mapper)
     {
-        private readonly TierRepository _repo;
-        private readonly IMapper _mapper;
-
-        public TierService(
-                TierRepository repo,
-                IMapper mapper)
-        {
-            _repo = repo;
-            _mapper = mapper;
-        }
+        private readonly TierRepository _repo = repo;
+        private readonly IMapper _mapper = mapper;
 
         public async Task<OutboundTier> CreateTier(TierCreatePayload payload)
         {
