@@ -12,9 +12,10 @@ namespace core.Services
         private readonly UserRepository _userRepo;
         private readonly IMapper _mapper;
 
-        public MediaService(MediaRepository repo, IMapper mapper)
+        public MediaService(MediaRepository repo, UserRepository userRepo, IMapper mapper)
         {
             _repo = repo;
+            _userRepo = userRepo;
             _mapper = mapper;
         }
 
