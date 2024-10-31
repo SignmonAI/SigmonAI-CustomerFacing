@@ -33,7 +33,7 @@ namespace core.Contexts
 
             #region Country
 
-            model.Entity<Language>()
+            model.Entity<Country>()
                 .HasIndex(c => c.PhoneCode)
                 .IsUnique();
 
