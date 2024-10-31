@@ -18,5 +18,6 @@ namespace core.Models
         public string? Password { get; set; }
 
         public Subscription? Subscription { get; set; }
+        public List<Request>? Requests { get; set; }
     }
 }

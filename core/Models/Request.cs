@@ -8,8 +8,8 @@ namespace core.Models
         public User? User { get; set; }
         public Media? Media { get; set; }
 
-        [Column("answear", TypeName = "varchar(10)")]
-        public String? Answear { get; set; }
+        [Column("answer", TypeName = "varchar(10)")]
+        public string? Answer { get; set; }
 
         [Column("date", TypeName = "date")]
         public DateOnly Date { get; set; }

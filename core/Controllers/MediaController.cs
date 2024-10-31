@@ -1,3 +1,4 @@
+using core.Data.Outbound;
 using core.Data.Payloads;
 using core.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -16,7 +17,7 @@ namespace core.Controllers
         {
             var media = await service.GetById(id);
 
-            return Ok(media);
+            return Ok(OutboundMedia.BuildFromEntity(media));
         }
 
         [HttpPost]
@@ -27,7 +28,8 @@ namespace core.Controllers
         {
             var media = await service.CreateMedia(payload);
             
-            return Created("/api/v1/medias/register", media);
+            return Created("/api/v1/medias/register", 
+                    OutboundMedia.BuildFromEntity(media));
         }
 
         [HttpDelete]

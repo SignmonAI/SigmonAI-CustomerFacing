@@ -12,13 +12,18 @@ namespace core.Services
     public class RequestService
     {
         private readonly RequestRepository _repo;
+        private readonly UserRepository _userRepo;
+        private readonly MediaRepository _mediaRepo;
         private readonly IMapper _mapper;
 
-        private static readonly PasswordHasher<User> _passwordHasher = new();
-
-        public RequestService(RequestRepository repo, IMapper mapper)
+        public RequestService(RequestRepository repo, 
+            UserRepository userRepo,
+            MediaRepository mediaRepo, 
+            IMapper mapper)
         {
             _repo = repo;
+            _userRepo = userRepo;
+            _mediaRepo = mediaRepo;
             _mapper = mapper;
         }
 
@@ -26,6 +31,17 @@ namespace core.Services
         {
             var newRequest = new Request();
             _mapper.Map(payload, newRequest);
+
+            var user = await _userRepo.FindByIdAsync(payload.UserId) 
+                ?? throw new NotFoundException("User not found.");
+            newRequest.User = user;
+
+            var media = await _mediaRepo.FindByIdAsync(payload.MediaId) 
+                ?? throw new NotFoundException("Media not found.");
+            newRequest.Media = media;
+
+            var currentDate = DateTime.Now;
+            newRequest.Date = DateOnly.FromDateTime(currentDate);
 
             var request = await _repo.UpsertAsync(newRequest)
                     ?? throw new UpsertFailException("Request could not be created.");

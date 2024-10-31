@@ -8,7 +8,8 @@ namespace core.Contexts
         public DbSet<User> Users { get; set; }
         public DbSet<Subscription> Subscriptions { get; set; }
         public DbSet<Bill> Bills { get; set; }
-
+        public DbSet<Request> Requests { get; set; }
+        public DbSet<Media> Medias { get; set; }
         protected override void OnModelCreating(ModelBuilder model)
         {
             #region User
@@ -37,6 +38,14 @@ namespace core.Contexts
             model.Entity<Bill>()
                     .HasOne(b => b.Subscription)
                     .WithMany(s => s.Bills);
+
+            #endregion
+
+            #region Request
+
+            model.Entity<Request>()
+                    .HasOne(r => r.User)
+                    .WithMany(u => u.Requests);
 
             #endregion
         }

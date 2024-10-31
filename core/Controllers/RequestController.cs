@@ -1,3 +1,4 @@
+using core.Data.Outbound;
 using core.Data.Payloads;
 using core.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -16,7 +17,7 @@ namespace core.Controllers
         {
             var request = await service.GetById(id);
 
-            return Ok(request);
+            return Ok(OutboundRequest.BuildFromEntity(request));
         }
 
         [HttpGet]
@@ -27,7 +28,8 @@ namespace core.Controllers
         {
             var requests = await service.GetByUserId(user);
 
-            return Ok(requests);
+            return Ok(requests.Select(r => 
+                OutboundRequest.BuildFromEntity(r)));
         }
 
         [HttpPost]
@@ -38,7 +40,8 @@ namespace core.Controllers
         {
             var request = await service.CreateRequest(payload);
             
-            return Created("/api/v1/requests/register", request);
+            return Created("/api/v1/requests/register", 
+                OutboundRequest.BuildFromEntity(request));
         }
 
         [HttpDelete]

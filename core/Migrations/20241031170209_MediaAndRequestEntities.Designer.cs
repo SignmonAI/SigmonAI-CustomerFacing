@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using core.Contexts;
 
@@ -11,9 +12,11 @@ using core.Contexts;
 namespace core.Migrations
 {
     [DbContext(typeof(SigmonDbContext))]
-    partial class SigmonDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241031170209_MediaAndRequestEntities")]
+    partial class MediaAndRequestEntities
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -60,7 +63,12 @@ namespace core.Migrations
                         .HasColumnType("varbinary(MAX)")
                         .HasColumnName("content");
 
+                    b.Property<Guid?>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Medias");
                 });
@@ -71,7 +79,7 @@ namespace core.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Answer")
+                    b.Property<string>("Answear")
                         .HasColumnType("varchar(10)")
                         .HasColumnName("answer");
 
@@ -150,6 +158,15 @@ namespace core.Migrations
                         .HasForeignKey("SubscriptionId");
 
                     b.Navigation("Subscription");
+                });
+
+            modelBuilder.Entity("core.Models.Media", b =>
+                {
+                    b.HasOne("core.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("core.Models.Request", b =>

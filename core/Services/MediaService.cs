@@ -24,9 +24,6 @@ namespace core.Services
 
         public async Task<Media> CreateMedia(MediaCreatePayload payload)
         {
-            var user = await _userRepo.FindByIdAsync(payload.UserId)
-                ?? throw new NotFoundException("User not found.");
-
             var ors = payload.Content.OpenReadStream();
             var ms = new MemoryStream();
             ors.CopyTo(ms);
@@ -34,7 +31,6 @@ namespace core.Services
 
             var newMedia = new Media
             {
-                User = user,
                 Content = bytes
             };
 
