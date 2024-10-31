@@ -7,31 +7,31 @@ namespace core.Services.Fixtures
     public class BaseFixture<TObject> : IFixture<TObject>
             where TObject : Entity 
     {
-        private static TObject? _instance;
+        private TObject? _instance;
         private readonly IRepository<TObject> _repo;
         private readonly bool _generateInDatabase;
 
-        public static TObject? Instance => _instance;
+        public TObject? DefaultInstance => _instance;
         public bool GenerateInDatabase => _generateInDatabase;
 
         public BaseFixture(
             IRepository<TObject> repository,
-            bool generateInDatabase)
+            bool generateInDatabase = false)
         {
             _instance = default;
             _repo = repository;
             _generateInDatabase = generateInDatabase;
         }
 
-        public async Task PublishInstance(TObject newInstance)
+        public async Task ApplyDefault(TObject newInstance)
         {
             if (_generateInDatabase)
-                newInstance = await CreateIfNotExist(newInstance);
+                newInstance = await CreateIfNonExistant(newInstance);
 
             _instance = newInstance;
         }
 
-        async Task<TObject> CreateIfNotExist(TObject instance)
+        private async Task<TObject> CreateIfNonExistant(TObject instance)
         {
             bool exists = await _repo.ExistsAsync(instance.Id);
             if (exists)
