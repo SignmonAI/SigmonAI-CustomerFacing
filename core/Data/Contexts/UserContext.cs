@@ -4,6 +4,7 @@ namespace core.Data.Contexts
     {
         public required Guid UserId { get; init; }
         public required string UserName { get; init; }
+        public required short Subscription { get; init; }
     }
 
     public class UserContext

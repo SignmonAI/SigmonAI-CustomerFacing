@@ -34,6 +34,7 @@ namespace core.Services
             {
                 new("UserId", auth.UserId.ToString()),
                 new("UserName", auth.UserName),
+                new("Subscription", auth.Subscription.ToString()),
             };
 
             var SecToken = new JwtSecurityToken(
@@ -78,6 +79,7 @@ namespace core.Services
             {
                 UserId = Guid.Parse(claims.FindFirst("UserId")!.Value),
                 UserName = claims.FindFirst("UserEmail")!.Value,
+                Subscription = short.Parse(claims.FindFirst("Subscription")!.Value),
             });
         }
     }

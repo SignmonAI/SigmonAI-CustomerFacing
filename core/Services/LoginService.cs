@@ -40,7 +40,8 @@ namespace core.Services
             return new LoginResult.Succeeded()
             {
                 UserId = user.Id,
-                UserName = user.Name
+                UserName = user.Name,
+                Subscription = user.Subscription!.Tier.ModelNumber,
             };
         }
     }

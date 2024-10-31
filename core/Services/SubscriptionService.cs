@@ -6,19 +6,30 @@ using core.Repositories;
 
 namespace core.Services
 {
-    public class SubscriptionService(SubscriptionRepository repo, IMapper mapper)
+    public class SubscriptionService(
+            SubscriptionRepository repo,
+            TierRepository tierRepo,
+            IMapper mapper)
     {
         private readonly SubscriptionRepository _repo = repo;
+        private readonly TierRepository _tierRepo = tierRepo;
         private readonly IMapper _mapper = mapper;
 
-        public async Task<Subscription> GetByUserId(Guid userId) => await _repo.FindByUserIdAsync(userId) ?? throw new NotFoundException("User not found.");
+        public async Task<Subscription> GetByUserId(Guid userId) => await _repo.FindByUserIdAsync(userId)
+                ?? throw new NotFoundException("User not found.");
 
         public async Task<Subscription> CreateSubscription(SubscriptionCreatePayload payload)
         {
             var newSubscription = new Subscription();
             _mapper.Map(payload, newSubscription);
 
-            var savedSubscription= await _repo.UpsertAsync(newSubscription) ?? throw new UpsertFailException("Subscription could not be inserted.");
+            var subscriptionTier = await _tierRepo.FindByIdAsync(payload.TierId)
+                    ?? throw new NotFoundException("Subscription tier not found.");
+            
+            newSubscription.Tier = subscriptionTier;
+
+            var savedSubscription= await _repo.UpsertAsync(newSubscription)
+                    ?? throw new UpsertFailException("Subscription could not be inserted.");
 
             return savedSubscription;
         }
