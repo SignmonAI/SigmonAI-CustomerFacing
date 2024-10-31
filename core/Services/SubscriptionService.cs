@@ -6,9 +6,10 @@ using core.Repositories;
 
 namespace core.Services
 {
-    public class SubscriptionService(SubscriptionRepository repo, IMapper mapper)
+    public class SubscriptionService(SubscriptionRepository repo, IMapper mapper, UserRepository userRepo)
     {
         private readonly SubscriptionRepository _repo = repo;
+        private readonly UserRepository _userRepo = userRepo;
         private readonly IMapper _mapper = mapper;
 
         public async Task<Subscription> GetByUserId(Guid userId) => await _repo.FindByUserIdAsync(userId) ?? throw new NotFoundException("User not found.");
@@ -17,6 +18,9 @@ namespace core.Services
         {
             var newSubscription = new Subscription();
             _mapper.Map(payload, newSubscription);
+
+            var user = await _userRepo.FindByIdAsync(payload.UserId);
+            newSubscription.User = user;
 
             var savedSubscription= await _repo.UpsertAsync(newSubscription) ?? throw new UpsertFailException("Subscription could not be inserted.");
 

@@ -6,34 +6,54 @@ using core.Repositories;
 
 namespace core.Services
 {
-    public class BillService(BillRepository repo, IMapper mapper)
+    public class BillService(
+        BillRepository repo,
+        IMapper mapper,
+        SubscriptionRepository subscriptionRepo
+    )
     {
         private readonly BillRepository _repo = repo;
+        private readonly SubscriptionRepository _subscriptionRepo = subscriptionRepo;
         private readonly IMapper _mapper = mapper;
 
-        public async Task<Bill> GetById(Guid id) => await _repo.FindByIdAsync(id) ?? throw new NotFoundException("Bill not found.");
+        public async Task<Bill> GetById(Guid id) =>
+            await _repo.FindByIdAsync(id) ?? throw new NotFoundException("Bill not found.");
 
-        public async Task<IEnumerable<Bill>> GetBySubscriptionId(Guid subscriptionId) => await _repo.FindBySubscriptionId(subscriptionId);
+        public async Task<IEnumerable<Bill>> GetBySubscriptionId(Guid subscriptionId) =>
+            await _repo.FindBySubscriptionId(subscriptionId);
 
         public async Task<Bill> CreateBill(BillCreatePayload payload)
         {
             var newBill = new Bill();
+
             _mapper.Map(payload, newBill);
 
-            var savedBill = await _repo.UpsertAsync(newBill) ?? throw new UpsertFailException("Bill could not be inserted.");
+            var subscription = await _subscriptionRepo.FindByIdAsync(payload.SubscriptionId);
+            newBill.Subscription = subscription;
+
+            var savedBill =
+                await _repo.UpsertAsync(newBill)
+                ?? throw new UpsertFailException("Bill could not be inserted.");
 
             return savedBill;
         }
 
         public async Task<Bill> UpdateBill(Guid id, BillUpdatePayload payload)
         {
-            var bill = await _repo.FindByIdAsync(id)
-                     ?? throw new NotFoundException("Bill not found.");
+            var bill =
+                await _repo.FindByIdAsync(id) ?? throw new NotFoundException("Bill not found.");
 
             _mapper.Map(payload, bill);
 
-            var savedBill = await _repo.UpsertAsync(bill)
-                    ?? throw new UpsertFailException("Bill could not be updated.");
+            if (payload.SubscriptionId.HasValue)
+            {
+                var subscription = await _subscriptionRepo.FindByIdAsync(payload.SubscriptionId.Value);
+                bill.Subscription = subscription;
+            }
+
+            var savedBill =
+                await _repo.UpsertAsync(bill)
+                ?? throw new UpsertFailException("Bill could not be updated.");
 
             return savedBill;
         }
@@ -49,7 +69,6 @@ namespace core.Services
 
             if (!deleted)
                 throw new DeleteException("Bill couldn't be deleted.");
-                
         }
     }
 }
