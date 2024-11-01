@@ -9,9 +9,10 @@ using Microsoft.AspNetCore.Identity;
 
 namespace core.Services
 {
-    public class UserService(UserRepository repo, IMapper mapper)
+    public class UserService(UserRepository repo, IMapper mapper, CountryRepository countryRepo)
     {
         private readonly UserRepository _repo = repo;
+        private readonly CountryRepository _countryRepo = countryRepo;
         private readonly IMapper _mapper = mapper;
 
         private static readonly PasswordHasher<User> _passwordHasher = new();
@@ -27,7 +28,9 @@ namespace core.Services
             _mapper.Map(payload, newUser);
 
             var treatedPhone = Regex.Replace(payload.Phone, @"\D", "");
+            var country = await _countryRepo.FindByIdAsync(payload.CountryId);
 
+            newUser.Country = country;
             newUser.Phone = treatedPhone;
             newUser.Password = HashPassword(newUser, newUser.Password!);
 
@@ -54,13 +57,13 @@ namespace core.Services
             _mapper.Map(payload, user);
 
             if (payload.Phone is not null)
-            {
-                var treatedPhone = Regex.Replace(payload.Phone, @"\D", "");
-                user.Phone = treatedPhone;
-            }
+                user.Phone = Regex.Replace(payload.Phone, @"\D", "");;
 
             if (payload.Password is not null)
                 user.Password = HashPassword(user, user.Password!);
+
+            if (payload.CountryId.HasValue)
+                user.Country = await _countryRepo.FindByIdAsync(payload.CountryId.Value);
 
             var savedUser =
                 await _repo.UpsertAsync(user)

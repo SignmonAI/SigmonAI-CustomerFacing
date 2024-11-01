@@ -4,13 +4,15 @@ namespace core.Data.Payloads
         string Name,
         string Email,
         string Phone,
-        string Password
+        string Password,
+        Guid CountryId
     );
 
     public readonly record struct UserUpdatePayload(
         string? Name,
         string? Email,
         string? Phone,
-        string? Password
+        string? Password,
+        Guid? CountryId
     );
 }

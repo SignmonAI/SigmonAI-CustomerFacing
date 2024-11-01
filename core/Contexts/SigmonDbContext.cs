@@ -38,6 +38,14 @@ namespace core.Contexts
                 .IsUnique();
 
             #endregion
+
+            #region User
+
+            model.Entity<User>()
+                .HasOne(u => u.Country)
+                .WithMany();
+
+            #endregion
         }
     }
 }
