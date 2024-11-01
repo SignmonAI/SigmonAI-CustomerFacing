@@ -70,5 +70,16 @@ namespace core.Controllers
 
             return new OkObjectResult(JsonConvert.SerializeObject(result));
         }
+
+        [HttpPost]
+        [Route("{id}/new-tier")]
+        public async Task<IActionResult> ChangeSubscriptionTier(
+            [FromServices] UserService service,
+            [FromBody] UserChangeTierPayload payload,
+            Guid id)
+        {
+            var result = await service.UpdateSubscriptionTier(id, payload);
+            return new OkObjectResult(result);
+        }
     }
 }

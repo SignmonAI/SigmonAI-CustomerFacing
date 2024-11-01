@@ -110,10 +110,7 @@ namespace core.Services
             var user = await _repo.FindByIdAsync(id)
                     ?? throw new NotFoundException("User not found.");
             
-            user.Subscription = new()
-            {
-                Tier = await _tierFactory.CreateTier(payload.NewTier)
-            };
+            user.Subscription!.Tier = await _tierFactory.CreateTier(payload.NewTier);
 
             var savedUser = await _repo.UpsertAsync(user);
 
