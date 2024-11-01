@@ -99,10 +99,6 @@ namespace core.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<decimal?>("PaymentDue")
-                        .HasColumnType("decimal(5, 4)")
-                        .HasColumnName("payment_due");
-
                     b.Property<Guid?>("TierId")
                         .HasColumnType("uniqueidentifier");
 
@@ -133,6 +129,10 @@ namespace core.Migrations
                     b.Property<byte>("ModelNumber")
                         .HasColumnType("tinyint")
                         .HasColumnName("model_number");
+
+                    b.Property<decimal?>("PaymentDue")
+                        .HasColumnType("decimal(5, 4)")
+                        .HasColumnName("payment_due");
 
                     b.HasKey("Id");
 

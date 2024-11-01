@@ -31,10 +31,6 @@ namespace core.Services
 
             if (!emailMatches || !passwordMatches)
                 return new LoginResult.Failed();
-            
-            System.Console.WriteLine(user.Id);
-            System.Console.WriteLine(user.Name);
-            System.Console.WriteLine(user.Subscription!.Tier!.ModelNumber!);
 
             return new LoginResult.Succeeded()
             {

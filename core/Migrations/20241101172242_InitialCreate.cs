@@ -12,7 +12,7 @@ namespace core.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Country",
+                name: "Countries",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -21,20 +21,39 @@ namespace core.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Country", x => x.Id);
+                    table.PrimaryKey("PK_Countries", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Tier",
+                name: "Tiers",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     model_desctiption = table.Column<string>(type: "varchar(255)", nullable: false),
-                    model_number = table.Column<byte>(type: "tinyint", nullable: false)
+                    model_number = table.Column<byte>(type: "tinyint", nullable: false),
+                    payment_due = table.Column<decimal>(type: "decimal(5,4)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Tier", x => x.Id);
+                    table.PrimaryKey("PK_Tiers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Languages",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    name = table.Column<string>(type: "varchar(255)", nullable: true),
+                    CountryId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Languages", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Languages_Countries_CountryId",
+                        column: x => x.CountryId,
+                        principalTable: "Countries",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -52,9 +71,9 @@ namespace core.Migrations
                 {
                     table.PrimaryKey("PK_Users", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Users_Country_CountryId",
+                        name: "FK_Users_Countries_CountryId",
                         column: x => x.CountryId,
-                        principalTable: "Country",
+                        principalTable: "Countries",
                         principalColumn: "Id");
                 });
 
@@ -64,16 +83,15 @@ namespace core.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    TierId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    payment_due = table.Column<decimal>(type: "decimal(5,4)", nullable: true)
+                    TierId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Subscriptions", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Subscriptions_Tier_TierId",
+                        name: "FK_Subscriptions_Tiers_TierId",
                         column: x => x.TierId,
-                        principalTable: "Tier",
+                        principalTable: "Tiers",
                         principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Subscriptions_Users_UserId",
@@ -109,11 +127,16 @@ namespace core.Migrations
                 column: "SubscriptionId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Country_phone_code",
-                table: "Country",
+                name: "IX_Countries_phone_code",
+                table: "Countries",
                 column: "phone_code",
                 unique: true,
                 filter: "[phone_code] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Languages_CountryId",
+                table: "Languages",
+                column: "CountryId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Subscriptions_TierId",
@@ -139,16 +162,19 @@ namespace core.Migrations
                 name: "Bills");
 
             migrationBuilder.DropTable(
+                name: "Languages");
+
+            migrationBuilder.DropTable(
                 name: "Subscriptions");
 
             migrationBuilder.DropTable(
-                name: "Tier");
+                name: "Tiers");
 
             migrationBuilder.DropTable(
                 name: "Users");
 
             migrationBuilder.DropTable(
-                name: "Country");
+                name: "Countries");
         }
     }
 }

@@ -12,8 +12,8 @@ using core.Contexts;
 namespace core.Migrations
 {
     [DbContext(typeof(SigmonDbContext))]
-    [Migration("20241101142718_LoreMgrationAgain")]
-    partial class LoreMgrationAgain
+    [Migration("20241101172242_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -102,10 +102,6 @@ namespace core.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<decimal?>("PaymentDue")
-                        .HasColumnType("decimal(5, 4)")
-                        .HasColumnName("payment_due");
-
                     b.Property<Guid?>("TierId")
                         .HasColumnType("uniqueidentifier");
 
@@ -136,6 +132,10 @@ namespace core.Migrations
                     b.Property<byte>("ModelNumber")
                         .HasColumnType("tinyint")
                         .HasColumnName("model_number");
+
+                    b.Property<decimal?>("PaymentDue")
+                        .HasColumnType("decimal(5, 4)")
+                        .HasColumnName("payment_due");
 
                     b.HasKey("Id");
 
