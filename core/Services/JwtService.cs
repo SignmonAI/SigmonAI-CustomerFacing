@@ -67,7 +67,7 @@ namespace core.Services
                         },
                         out var validatedToken);
             }
-            catch (SecurityTokenException ex)
+            catch (Exception ex)
             {
                 throw new InvalidTokenException("Unable to validate token and its claims.", ex);
             }
