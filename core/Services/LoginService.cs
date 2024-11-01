@@ -36,7 +36,7 @@ namespace core.Services
             {
                 UserId = user.Id,
                 UserName = user.Name!,
-                Subscription = user.Subscription!.Tier!.ModelNumber!
+                Subscription = default
             };
         }
     }
