@@ -79,7 +79,7 @@ namespace core.Services
             {
                 UserId = Guid.Parse(claims.FindFirst("UserId")!.Value),
                 UserName = claims.FindFirst("UserEmail")!.Value,
-                Subscription = short.Parse(claims.FindFirst("Subscription")!.Value),
+                SubscriptionModel = short.Parse(claims.FindFirst("Subscription")!.Value),
             });
         }
     }

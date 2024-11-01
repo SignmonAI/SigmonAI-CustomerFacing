@@ -20,6 +20,7 @@ namespace core.Middlewares
                 DeleteException e => new Error(StatusCodes.Status500InternalServerError, e.Message),
                 NotFoundException e => new Error(StatusCodes.Status404NotFound, e.Message),
                 UpsertFailException e => new Error(StatusCodes.Status500InternalServerError, e.Message),
+                ExternalResponseException e => new Error(StatusCodes.Status424FailedDependency, e.Message),
                 _ => new Error(StatusCodes.Status500InternalServerError, "Unknown server error.")
             };
 
