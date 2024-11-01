@@ -1,3 +1,5 @@
+using core.Models;
+
 namespace core.Data.Payloads
 {
     public readonly record struct UserCreatePayload(
@@ -12,5 +14,9 @@ namespace core.Data.Payloads
         string? Email,
         string? Phone,
         string? Password
+    );
+
+    public readonly record struct UserChangeTierPayload(
+        ClassificationModel NewTier
     );
 }
