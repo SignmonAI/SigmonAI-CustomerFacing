@@ -66,11 +66,13 @@ namespace core
 
             // Repositories configuration
             services.AddScoped<UserRepository>();
+            services.AddScoped<TierRepository>();
 
             // Services layer registration
             services.AddScoped<UserService>();
             services.AddScoped<JwtService>();
             services.AddScoped<LoginService>();
+            services.AddScoped<TierService>();
 
             // Fixtures configuration
             services.AddTransient<IFixture<Tier>>(sp =>
