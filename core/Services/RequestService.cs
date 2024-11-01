@@ -35,6 +35,7 @@ namespace core.Services
             var user = await _userRepo.FindByIdAsync(payload.UserId) 
                 ?? throw new NotFoundException("User not found.");
             newRequest.User = user;
+            user.Requests!.Add(newRequest);
 
             var media = await _mediaRepo.FindByIdAsync(payload.MediaId) 
                 ?? throw new NotFoundException("Media not found.");
@@ -51,7 +52,7 @@ namespace core.Services
 
         public async Task<Request> GetById(Guid id)
         {
-            var request = await _repo.FindByIdAsync(id)
+            var request = await _repo.EagerFindByIdAsync(id)
                     ?? throw new NotFoundException("Request not found.");
             
             return request;
@@ -59,7 +60,7 @@ namespace core.Services
 
         public async Task<IEnumerable<Request>> GetByUserId(Guid userId)
         {
-            var (requests, _) = await _repo.FindManyAsync();
+            var requests = await _repo.EagerFindManyAsync();
             var usersRequests = requests.Where(req => req.User!.Id == userId);
             
             return usersRequests;

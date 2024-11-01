@@ -4,7 +4,6 @@ namespace core.Data.Outbound
 {
     public readonly record struct OutboundRequest(
         Guid Id,
-        Guid UserId,
         string Answer,
         DateOnly Date
     ){
@@ -12,7 +11,6 @@ namespace core.Data.Outbound
         {
             return new OutboundRequest (
                 request.Id,
-                request.User!.Id,
                 request.Answer!,
                 request.Date
             );
