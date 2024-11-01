@@ -11,5 +11,8 @@ namespace core.Repositories
          public async Task<Language?> FindByCountryIdAsync(Guid countryId)
             => await _rootSet.FirstOrDefaultAsync(l => l.Country!.Id == countryId);
 
+        public async Task<Language?> FindByIdEagerAsync(Guid countryId)
+            => await _rootSet.Include(c => c.Country).SingleOrDefaultAsync(l => l.Country!.Id.Equals(countryId));
+
     }
 }

@@ -11,14 +11,9 @@ namespace core.Controllers
 {
     [ApiController]
     [Route("api/v1/users")]
-    public class UserController : ControllerBase
+    public class UserController(IMapper mapper) : ControllerBase
     {
-        private IMapper _mapper;
-
-        public UserController(IMapper mapper)
-        {
-            _mapper = mapper;
-        }
+        private IMapper _mapper = mapper;
 
         [HttpPost]
         [Route("register")]

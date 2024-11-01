@@ -1,6 +1,5 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using core.Models.Seed;
-using Microsoft.EntityFrameworkCore;
 
 namespace core.Models
 {
