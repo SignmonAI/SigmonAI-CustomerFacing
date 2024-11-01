@@ -21,7 +21,7 @@ namespace core.Repositories
 
         Task<TEntity?> FindByIdAsync(Guid id);
 
-        Task<(IEnumerable<TEntity>, PaginationInfo?)> FindManyAsync(PaginationOptions? pagination = null); 
+        Task<(IEnumerable<TEntity>, PaginationInfo?)> FindManyAsync(PaginationOptions pagination); 
 
         Task<TEntity?> UpsertAsync(TEntity entity);
 

@@ -2,6 +2,7 @@ using System.IdentityModel.Tokens.Jwt;
 using AutoMapper;
 using core.Contexts;
 using core.Data;
+using core.Data.Contexts;
 using core.Middlewares;
 using core.Repositories;
 using core.Services;
@@ -69,6 +70,7 @@ namespace core
             services.AddScoped<UserService>();
             services.AddScoped<JwtService>();
             services.AddScoped<LoginService>();
+            services.AddScoped<UserContext>();
 
             // Middlewares registration
             services.AddTransient<AuthenticationMiddleware>();

@@ -41,25 +41,25 @@ namespace core.Repositories
         }
 
         public async Task<(IEnumerable<TEntity>, PaginationInfo?)> FindManyAsync(
-                PaginationOptions? pagination = null)
+                PaginationOptions pagination)
         {
             IQueryable<TEntity> query = _rootSet;
             PaginationInfo? paginationInfo = null;
 
-            if (pagination is not null)
+            if (pagination.Take != 0)
             {
                 var totalItems = await query.CountAsync();
 
-                if (totalItems <= pagination.Value.Offset )
+                if (totalItems <= pagination.Offset )
                     throw new Exception("Offset exceeds maximum of items.");
 
-                query = query.Skip(pagination.Value.Offset).Take(pagination.Value.Take);
+                query = query.Skip(pagination.Offset).Take(pagination.Take);
 
                 paginationInfo = new PaginationInfo
                 {
                     Items = totalItems,
-                    CurrentPage = pagination.Value.Offset / pagination.Value.Take + 1,
-                    TotalPages = (int) Math.Ceiling((double) totalItems / pagination.Value.Take),
+                    CurrentPage = pagination.Offset / pagination.Take + 1,
+                    TotalPages = (int) Math.Ceiling((double) totalItems / pagination.Take),
                 };
             }
 

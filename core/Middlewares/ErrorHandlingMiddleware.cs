@@ -14,10 +14,11 @@ namespace core.Middlewares
         {
             var error = exception switch
             {
+                AlreadyExistsException e => new Error(StatusCodes.Status400BadRequest, e.Message),
                 AuthenticationException e => new Error(StatusCodes.Status400BadRequest, e.Message, e.Failure),
+                DeleteException e => new Error(StatusCodes.Status500InternalServerError, e.Message),
                 InvalidHeadersException e => new Error(StatusCodes.Status400BadRequest, e.Message),
                 InvalidTokenException e => new Error(StatusCodes.Status400BadRequest, e.Message),
-                DeleteException e => new Error(StatusCodes.Status500InternalServerError, e.Message),
                 NotFoundException e => new Error(StatusCodes.Status404NotFound, e.Message),
                 UpsertFailException e => new Error(StatusCodes.Status500InternalServerError, e.Message),
                 _ => new Error(StatusCodes.Status500InternalServerError, "Unknown server error.")

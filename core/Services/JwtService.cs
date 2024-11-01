@@ -45,6 +45,8 @@ namespace core.Services
             
             var token = _tokenHandler.WriteToken(SecToken);
 
+            System.Console.WriteLine(token);
+
             return new OutboundToken(token);
         }
 
@@ -61,7 +63,7 @@ namespace core.Services
                             ValidateLifetime = true,
                             ValidateIssuerSigningKey = true,
                             ValidateAudience = false,
-                            ValidIssuer = "ETStream",
+                            ValidIssuer = "Sigmon AI",
                             IssuerSigningKey = _securityKey
                         },
                         out var validatedToken);
@@ -77,7 +79,7 @@ namespace core.Services
             userContext.Fill(new ContextData
             {
                 UserId = Guid.Parse(claims.FindFirst("UserId")!.Value),
-                UserName = claims.FindFirst("UserEmail")!.Value,
+                UserName = claims.FindFirst("UserName")!.Value,
             });
         }
     }

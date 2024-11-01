@@ -7,15 +7,10 @@ using Microsoft.AspNetCore.Identity;
 
 namespace core.Services
 {
-    public class LoginService
+    public class LoginService(UserRepository repo)
     {
-        private readonly UserRepository _repo;
+        private readonly UserRepository _repo = repo;
         private readonly PasswordHasher<User> _hasher = new();
-
-        public LoginService(UserRepository repo)
-        {
-            _repo = repo;
-        }
 
         public async Task<LoginResult> TryLogin(LoginPayload payload)
         {
@@ -40,7 +35,7 @@ namespace core.Services
             return new LoginResult.Succeeded()
             {
                 UserId = user.Id,
-                UserName = user.Name
+                UserName = user.Name,
             };
         }
     }
