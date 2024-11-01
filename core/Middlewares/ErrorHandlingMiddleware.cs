@@ -22,6 +22,7 @@ namespace core.Middlewares
                 NotFoundException e => new Error(StatusCodes.Status404NotFound, e.Message),
                 UnauthorizedUserException e => new Error(StatusCodes.Status401Unauthorized, e.Message),
                 UpsertFailException e => new Error(StatusCodes.Status500InternalServerError, e.Message),
+                ExternalResponseException e => new Error(StatusCodes.Status424FailedDependency, e.Message),
                 _ => new Error(StatusCodes.Status500InternalServerError, "Unknown server error.")
             };
 

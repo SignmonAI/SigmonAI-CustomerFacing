@@ -5,6 +5,7 @@ using core.Data;
 using core.Data.Contexts;
 using core.Data.Outbound;
 using core.Errors;
+using core.Models;
 using Microsoft.IdentityModel.Tokens;
 
 namespace core.Services
@@ -78,8 +79,14 @@ namespace core.Services
             userContext.Fill(new ContextData
             {
                 UserId = Guid.Parse(claims.FindFirst("UserId")!.Value),
-                UserName = claims.FindFirst("UserName")!.Value,
-                Subscription = short.Parse(claims.FindFirst("Subscription")!.Value),
+                UserName = claims.FindFirst("UserEmail")!.Value,
+                SubscriptionModel = claims.FindFirst("Subscription")!.Value switch
+                {
+                    "1" => ClassificationModel.FREE,
+                    "2" => ClassificationModel.INTERMEDIATE,
+                    "3" => ClassificationModel.ADVANCED,
+                    _ => throw new Exception("Enum conversion error."),
+                },
             });
         }
     }

@@ -68,6 +68,7 @@ namespace core
             // Repositories configuration
             services.AddScoped<UserRepository>();
             services.AddScoped<CountryRepository>();
+            services.AddScoped<TierRepository>();
 
             // Services layer registration
             services.AddScoped<UserService>();
@@ -75,6 +76,7 @@ namespace core
             services.AddScoped<JwtService>();
             services.AddScoped<LoginService>();
             services.AddScoped<UserContext>();
+            services.AddScoped<TierService>();
 
             // Fixtures configuration
             services.AddTransient<IFixture<Tier>>(sp =>

@@ -5,17 +5,16 @@ using Microsoft.AspNetCore.Mvc;
 namespace core.Controllers
 {
     [ApiController]
-    [Route("/api/v1/tiers")]
+    [Route("api/v1/tier")]
     public class TierController : ControllerBase
     {
         [HttpPost]
-        public async Task<IActionResult> CreateTier(          
-                [FromServices] TierService service,
-                [FromBody] TierCreatePayload payload)
+        async public Task<IActionResult> CreateTier(
+            [FromServices] TierService service,
+            [FromBody] TierCreatePayload payload)
         {
             var result = await service.CreateTier(payload);
-
-            return new CreatedResult("/api/v1/tiers", result);
+            return new OkObjectResult(result);
         }
     }
 }
