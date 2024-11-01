@@ -65,9 +65,11 @@ namespace core
 
             // Repositories configuration
             services.AddScoped<UserRepository>();
+            services.AddScoped<CountryRepository>();
 
             // Services layer registration
             services.AddScoped<UserService>();
+            services.AddScoped<CountryService>();
             services.AddScoped<JwtService>();
             services.AddScoped<LoginService>();
             services.AddScoped<UserContext>();

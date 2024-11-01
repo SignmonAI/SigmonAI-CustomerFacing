@@ -45,8 +45,6 @@ namespace core.Services
             
             var token = _tokenHandler.WriteToken(SecToken);
 
-            System.Console.WriteLine(token);
-
             return new OutboundToken(token);
         }
 

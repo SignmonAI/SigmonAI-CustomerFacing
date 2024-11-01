@@ -19,10 +19,10 @@ namespace core.Services
 
             var verification = _hasher.VerifyHashedPassword(
                 user,
-                user.Password,
+                user.Password!,
                 payload.Password);
             
-            bool emailMatches = user.Email.Equals(payload.Email);
+            bool emailMatches = user.Email!.Equals(payload.Email);
             bool passwordMatches = verification switch
             {
                 PasswordVerificationResult.Success => true,
@@ -35,7 +35,7 @@ namespace core.Services
             return new LoginResult.Succeeded()
             {
                 UserId = user.Id,
-                UserName = user.Name,
+                UserName = user.Name!,
             };
         }
     }
