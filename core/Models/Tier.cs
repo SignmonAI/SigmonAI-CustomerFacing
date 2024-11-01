@@ -22,7 +22,7 @@ namespace core.Models
         [Column("payment_due", TypeName = "decimal(5, 4)")]
         public double? PaymentDue { get; set; }
 
-        protected Tier() { }
+        public Tier() { }
 
         public Tier(
                 string modelDescription,
