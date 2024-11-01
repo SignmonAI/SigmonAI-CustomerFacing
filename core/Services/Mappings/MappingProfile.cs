@@ -60,6 +60,16 @@ namespace core.Services.Mappings
                     .ForMember(
                         dest => dest.Pagination,
                         opt => opt.MapFrom(src => src.Item2));
+
+            CreateMap<Country, OutboundCountry>();
+
+            CreateMap<(IEnumerable<Country>, PaginationInfo?), OutboundPaginatedCountries>()
+                    .ForMember(
+                        dest => dest.Countries,
+                        opt => opt.MapFrom(src => src.Item1))
+                    .ForMember(
+                        dest => dest.Pagination,
+                        opt => opt.MapFrom(src => src.Item2));
         }
     }
 }

@@ -68,11 +68,18 @@ namespace core
             // Repositories configuration
             services.AddScoped<UserRepository>();
             services.AddScoped<CountryRepository>();
+            services.AddScoped<LanguageRepository>();
+            services.AddScoped<SubscriptionRepository>();
             services.AddScoped<TierRepository>();
+            services.AddScoped<BillRepository>();
 
             // Services layer registration
             services.AddScoped<UserService>();
             services.AddScoped<CountryService>();
+            services.AddScoped<LanguageService>();
+            services.AddScoped<SubscriptionService>();
+            services.AddScoped<TierService>();
+            services.AddScoped<BillService>();
             services.AddScoped<JwtService>();
             services.AddScoped<LoginService>();
             services.AddScoped<UserContext>();

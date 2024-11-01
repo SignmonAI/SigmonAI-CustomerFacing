@@ -18,7 +18,7 @@ namespace core.Services
         private readonly IMapper _mapper = mapper;
 
         public async Task<Subscription> GetByUserId(Guid userId) => await _repo.FindByUserIdAsync(userId)
-                ?? throw new NotFoundException("User not found.");
+                ?? throw new NotFoundException("Subscription not found.");
 
         public async Task<Subscription> CreateSubscription(SubscriptionCreatePayload payload)
         {

@@ -13,7 +13,7 @@ namespace core.Services
 
         private readonly IMapper _mapper = mapper;
 
-        public async Task<Language> GetById(Guid id) => await _repo.FindByIdAsync(id) ?? throw new NotFoundException("Language not found.");
+        public async Task<Language> GetById(Guid id) => await _repo.FindByIdEagerAsync(id) ?? throw new NotFoundException("Language not found.");
 
         public async Task<Language> GetByCountryId(Guid countryId) => await _repo.FindByCountryIdAsync(countryId) ?? throw new NotFoundException("Country not found.");
 

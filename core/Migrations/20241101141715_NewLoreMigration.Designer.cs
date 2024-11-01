@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using core.Contexts;
 
@@ -11,9 +12,11 @@ using core.Contexts;
 namespace core.Migrations
 {
     [DbContext(typeof(SigmonDbContext))]
-    partial class SigmonDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241101141715_NewLoreMigration")]
+    partial class NewLoreMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -70,27 +73,7 @@ namespace core.Migrations
                         .IsUnique()
                         .HasFilter("[phone_code] IS NOT NULL");
 
-                    b.ToTable("Countries");
-                });
-
-            modelBuilder.Entity("core.Models.Language", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("CountryId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("varchar(255)")
-                        .HasColumnName("name");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CountryId");
-
-                    b.ToTable("Languages");
+                    b.ToTable("Country");
                 });
 
             modelBuilder.Entity("core.Models.Subscription", b =>
@@ -136,7 +119,7 @@ namespace core.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Tiers");
+                    b.ToTable("Tier");
                 });
 
             modelBuilder.Entity("core.Models.User", b =>
@@ -178,15 +161,6 @@ namespace core.Migrations
                         .HasForeignKey("SubscriptionId");
 
                     b.Navigation("Subscription");
-                });
-
-            modelBuilder.Entity("core.Models.Language", b =>
-                {
-                    b.HasOne("core.Models.Country", "Country")
-                        .WithMany()
-                        .HasForeignKey("CountryId");
-
-                    b.Navigation("Country");
                 });
 
             modelBuilder.Entity("core.Models.Subscription", b =>
