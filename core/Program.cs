@@ -4,8 +4,10 @@ using core.Contexts;
 using core.Data;
 using core.Data.Contexts;
 using core.Middlewares;
+using core.Models;
 using core.Repositories;
 using core.Services;
+using core.Services.Fixtures;
 using core.Services.Mappings;
 using Microsoft.EntityFrameworkCore;
 
@@ -73,6 +75,12 @@ namespace core
             services.AddScoped<JwtService>();
             services.AddScoped<LoginService>();
             services.AddScoped<UserContext>();
+
+            // Fixtures configuration
+            services.AddTransient<IFixture<Tier>>(sp =>
+                    new BaseFixture<Tier>(
+                        sp.GetRequiredService<TierRepository>(),
+                        generateInDatabase: true));
 
             // Middlewares registration
             services.AddTransient<AuthenticationMiddleware>();

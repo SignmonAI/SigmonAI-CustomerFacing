@@ -34,10 +34,11 @@ namespace core.Services
             newUser.Phone = treatedPhone;
             newUser.Password = HashPassword(newUser, newUser.Password!);
 
-            var savedUser =
-                await _repo.UpsertAsync(newUser)
-                ?? throw new UpsertFailException("User could not be inserted.");
+            
 
+            var savedUser = await _repo.UpsertAsync(newUser)
+                    ?? throw new UpsertFailException("User could not be inserted.");
+            
             return savedUser;
         }
 

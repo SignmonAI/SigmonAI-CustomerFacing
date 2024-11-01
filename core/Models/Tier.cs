@@ -11,8 +11,5 @@ namespace core.Models
 
         [Column("model_number", TypeName = "tinyint")]
         public short ModelNumber { get; set; }
-
-        [Column("base_pricing", TypeName = "decimal(5, 4)")]
-        public float BasePricing { get; set; }
     }
 }
