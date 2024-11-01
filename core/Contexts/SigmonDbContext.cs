@@ -7,8 +7,10 @@ namespace core.Contexts
     {
         public DbSet<Bill> Bills { get; set; }
         public DbSet<Country> Countries { get; set; }
-        public DbSet<User> Users { get; set; }
+        public DbSet<Language> Languages { get; set; }
         public DbSet<Subscription> Subscriptions { get; set; }
+        public DbSet<Tier> Tiers { get; set; }
+        public DbSet<User> Users { get; set; }
 
         protected override void OnModelCreating(ModelBuilder model)
         {
