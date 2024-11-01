@@ -63,6 +63,16 @@ namespace core.Services
             return paginatedData;
         }
 
+        public async Task<bool> UpdateSubscriptionTier(
+                Guid id,
+                UserChangeTierPayload payload)
+        {
+            var user = await _repo.FindByIdAsync(id)
+                    ?? throw new NotFoundException("User not found.");
+            
+            user.Subscription.Tier = 
+        }
+
         private static string HashPassword(User user, string raw)
         {
             var hashedPassword = _passwordHasher.HashPassword(user, raw);
