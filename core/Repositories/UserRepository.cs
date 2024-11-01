@@ -10,7 +10,10 @@ namespace core.Repositories
 
         public async Task<User?> FindByEmailAsync(string email)
         {
-            var user = await _rootSet.FirstOrDefaultAsync(u => u.Email.Equals(email));
+            var user = await _rootSet.Include(u => u.Subscription)
+                    .ThenInclude(s => s.Tier)
+                    .FirstOrDefaultAsync(u => u.Email.Equals(email));
+
             return user;
         }
     }

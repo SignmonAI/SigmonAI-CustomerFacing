@@ -83,18 +83,18 @@ namespace core.Migrations
                         .HasColumnType("decimal(5, 4)")
                         .HasColumnName("payment_due");
 
-                    b.Property<Guid>("UserId")
+                    b.Property<Guid?>("TierId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("tierId")
+                    b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("TierId");
+
                     b.HasIndex("UserId")
                         .IsUnique();
-
-                    b.HasIndex("tierId");
 
                     b.ToTable("Subscriptions");
                 });
@@ -104,10 +104,6 @@ namespace core.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<decimal>("BasePricing")
-                        .HasColumnType("decimal(5, 4)")
-                        .HasColumnName("base_pricing");
 
                     b.Property<string>("ModelDescription")
                         .IsRequired()
@@ -166,21 +162,19 @@ namespace core.Migrations
 
             modelBuilder.Entity("core.Models.Subscription", b =>
                 {
+                    b.HasOne("core.Models.Tier", "Tier")
+                        .WithMany()
+                        .HasForeignKey("TierId");
+
                     b.HasOne("core.Models.User", "User")
                         .WithOne("Subscription")
                         .HasForeignKey("core.Models.Subscription", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("core.Models.Tier", "tier")
-                        .WithMany()
-                        .HasForeignKey("tierId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("Tier");
 
                     b.Navigation("User");
-
-                    b.Navigation("tier");
                 });
 
             modelBuilder.Entity("core.Models.User", b =>

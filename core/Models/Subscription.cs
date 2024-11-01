@@ -10,9 +10,6 @@ namespace core.Models
 
         public Tier? Tier { get; set; }
 
-        [Column("payment_due", TypeName = "decimal(5, 4)")]
-        public double? PaymentDue { get; set; }
-
         public ICollection<Bill> Bills { get; set; } = [];
 
         public static implicit operator short(Subscription v)

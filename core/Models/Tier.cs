@@ -18,5 +18,18 @@ namespace core.Models
 
         [Column("model_number", TypeName = "tinyint")]
         public ClassificationModel ModelNumber { get; set; }
+
+        [Column("payment_due", TypeName = "decimal(5, 4)")]
+        public double? PaymentDue { get; set; }
+
+        protected Tier() { }
+
+        public Tier(
+                string modelDescription,
+                ClassificationModel modelNumber)
+        {
+            ModelDescription = modelDescription;
+            ModelNumber = modelNumber;
+        }
     }
 }

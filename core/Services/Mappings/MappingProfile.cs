@@ -34,10 +34,6 @@ namespace core.Services.Mappings
                     ));
 
             CreateMap<TierCreatePayload, Tier>();
-
-            CreateMap<TierUpdatePayload, Tier>()
-                    .ForAllMembers(opts => opts.Condition(
-                        (src, dest, srcMember) => srcMember is not null));
         
             CreateMap<LanguageCreatePayload, Language>();
 
@@ -60,6 +56,8 @@ namespace core.Services.Mappings
                     .ForMember(
                         dest => dest.Pagination,
                         opt => opt.MapFrom(src => src.Item2));
+        
+            CreateMap<Tier, OutboundTier>();
         }
     }
 }

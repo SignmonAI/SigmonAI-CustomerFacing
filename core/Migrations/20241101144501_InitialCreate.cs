@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace core.Migrations
 {
     /// <inheritdoc />
-    public partial class LoreMigration : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -30,12 +30,32 @@ namespace core.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     model_desctiption = table.Column<string>(type: "varchar(255)", nullable: false),
-                    model_number = table.Column<byte>(type: "tinyint", nullable: false),
-                    base_pricing = table.Column<decimal>(type: "decimal(5,4)", nullable: false)
+                    model_number = table.Column<byte>(type: "tinyint", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Tier", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Users",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    name = table.Column<string>(type: "varchar(255)", nullable: true),
+                    email = table.Column<string>(type: "varchar(255)", nullable: true),
+                    phone = table.Column<string>(type: "varchar(17)", nullable: true),
+                    password = table.Column<string>(type: "varchar(255)", nullable: true),
+                    CountryId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Users", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Users_Country_CountryId",
+                        column: x => x.CountryId,
+                        principalTable: "Country",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -44,18 +64,17 @@ namespace core.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    tierId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    TierId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     payment_due = table.Column<decimal>(type: "decimal(5,4)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Subscriptions", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Subscriptions_Tier_tierId",
-                        column: x => x.tierId,
+                        name: "FK_Subscriptions_Tier_TierId",
+                        column: x => x.TierId,
                         principalTable: "Tier",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Subscriptions_Users_UserId",
                         column: x => x.UserId,
@@ -97,15 +116,20 @@ namespace core.Migrations
                 filter: "[phone_code] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Subscriptions_tierId",
+                name: "IX_Subscriptions_TierId",
                 table: "Subscriptions",
-                column: "tierId");
+                column: "TierId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Subscriptions_UserId",
                 table: "Subscriptions",
                 column: "UserId",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_CountryId",
+                table: "Users",
+                column: "CountryId");
         }
 
         /// <inheritdoc />
@@ -115,13 +139,16 @@ namespace core.Migrations
                 name: "Bills");
 
             migrationBuilder.DropTable(
-                name: "Country");
-
-            migrationBuilder.DropTable(
                 name: "Subscriptions");
 
             migrationBuilder.DropTable(
                 name: "Tier");
+
+            migrationBuilder.DropTable(
+                name: "Users");
+
+            migrationBuilder.DropTable(
+                name: "Country");
         }
     }
 }

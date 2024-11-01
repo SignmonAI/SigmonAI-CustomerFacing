@@ -7,6 +7,7 @@ using core.Middlewares;
 using core.Models;
 using core.Repositories;
 using core.Services;
+using core.Services.Factories;
 using core.Services.Fixtures;
 using core.Services.Mappings;
 using Microsoft.EntityFrameworkCore;
@@ -65,6 +66,8 @@ namespace core
             // AutoMapper configuration
             services.AddAutoMapper(typeof(MappingProfile));
 
+            services.AddTransient<ITierFactory, DefaultTierFactory>();
+
             // Repositories configuration
             services.AddScoped<UserRepository>();
             services.AddScoped<CountryRepository>();
@@ -79,10 +82,18 @@ namespace core
             services.AddScoped<TierService>();
 
             // Fixtures configuration
-            services.AddTransient<IFixture<Tier>>(sp =>
-                    new BaseFixture<Tier>(
-                        sp.GetRequiredService<TierRepository>(),
-                        generateInDatabase: true));
+            // services.AddTransient<FreeTierFixture>(async sp =>
+            //     {
+            //         var f = new FreeTierFixture(
+            //             sp.GetRequiredService<TierRepository>(),
+            //             generateInDatabase: true);
+                    
+            //         await f.ApplyDefault(new Tier(
+            //             modelDescription: "Free",
+            //             modelNumber: ClassificationModel.FREE));
+                    
+            //         return f;
+            //     });
 
             // Middlewares registration
             services.AddTransient<AuthenticationMiddleware>();

@@ -5,14 +5,20 @@ using core.Data.Queries;
 using core.Errors;
 using core.Models;
 using core.Repositories;
+using core.Services.Factories;
 using Microsoft.AspNetCore.Identity;
 
 namespace core.Services
 {
-    public class UserService(UserRepository repo, IMapper mapper, CountryRepository countryRepo)
+    public class UserService(
+            UserRepository repo,
+            CountryRepository countryRepo,
+            ITierFactory tierFactory,
+            IMapper mapper)
     {
         private readonly UserRepository _repo = repo;
         private readonly CountryRepository _countryRepo = countryRepo;
+        private readonly ITierFactory _tierFactory = tierFactory;
         private readonly IMapper _mapper = mapper;
 
         private static readonly PasswordHasher<User> _passwordHasher = new();
@@ -34,7 +40,10 @@ namespace core.Services
             newUser.Phone = treatedPhone;
             newUser.Password = HashPassword(newUser, newUser.Password!);
 
-            
+            newUser.Subscription = new Subscription
+            {
+                Tier = await _tierFactory.CreateTier(ClassificationModel.FREE)
+            };
 
             var savedUser = await _repo.UpsertAsync(newUser)
                     ?? throw new UpsertFailException("User could not be inserted.");
@@ -94,15 +103,22 @@ namespace core.Services
             return paginatedData;
         }
 
-        // public async Task<bool> UpdateSubscriptionTier(
-        //         Guid id,
-        //         UserChangeTierPayload payload)
-        // {
-        //     var user = await _repo.FindByIdAsync(id)
-        //             ?? throw new NotFoundException("User not found.");
+        public async Task<bool> UpdateSubscriptionTier(
+                Guid id,
+                UserChangeTierPayload payload)
+        {
+            var user = await _repo.FindByIdAsync(id)
+                    ?? throw new NotFoundException("User not found.");
             
-        //     user.Subscription.Tier = 
-        // }
+            user.Subscription = new()
+            {
+                Tier = await _tierFactory.CreateTier(payload.NewTier)
+            };
+
+            var savedUser = await _repo.UpsertAsync(user);
+
+            return savedUser is not null;
+        }
 
         private static string HashPassword(User user, string raw)
         {

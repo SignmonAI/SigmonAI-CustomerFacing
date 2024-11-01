@@ -12,5 +12,10 @@ namespace core.Repositories
         {
             return await _rootSet.MaxAsync(t => (short?)t.ModelNumber) ?? 0;
         }
+
+        public async Task<bool> ExistsByNumberId(ClassificationModel number)
+        {
+            return await _rootSet.AnyAsync(t => t.ModelNumber.Equals(number));
+        }
     }
 }
