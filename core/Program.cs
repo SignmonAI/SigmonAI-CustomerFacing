@@ -66,7 +66,7 @@ namespace core
             // AutoMapper configuration
             services.AddAutoMapper(typeof(MappingProfile));
 
-            services.AddTransient<ITierFactory, DefaultTierFactory>();
+            services.AddScoped<ITierFactory, DefaultTierFactory>();
 
             // Repositories configuration
             services.AddScoped<UserRepository>();
@@ -87,6 +87,14 @@ namespace core
             services.AddScoped<LoginService>();
             services.AddScoped<UserContext>();
             services.AddScoped<TierService>();
+            services.AddScoped<ClassificationService>();
+
+            // Http Client
+            services.AddHttpClient<ClassificationService>(client =>
+            {
+                client.BaseAddress = new Uri("http://localhost:5000/");
+                client.DefaultRequestHeaders.Add("Accept", "application/json");
+            });
 
             // Fixtures configuration
             // services.AddTransient<FreeTierFixture>(async sp =>
@@ -94,16 +102,16 @@ namespace core
             //         var f = new FreeTierFixture(
             //             sp.GetRequiredService<TierRepository>(),
             //             generateInDatabase: true);
-                    
+
             //         await f.ApplyDefault(new Tier(
             //             modelDescription: "Free",
             //             modelNumber: ClassificationModel.FREE));
-                    
+
             //         return f;
             //     });
 
             // Middlewares registration
-            services.AddTransient<AuthenticationMiddleware>();
+            services.AddScoped<AuthenticationMiddleware>();
 
             // Exception handling configuration
             services.AddExceptionHandler<ErrorHandlingMiddleware>();

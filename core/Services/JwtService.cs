@@ -16,14 +16,17 @@ namespace core.Services
         private readonly JwtSecurityTokenHandler _tokenHandler;
         private readonly SymmetricSecurityKey _securityKey;
         private readonly SigningCredentials _credentials;
+        private readonly UserContext _userContext;
 
         public JwtService(
             IServiceProvider serviceProvider,
             JwtSettings jwtSettings,
-            JwtSecurityTokenHandler tokenHandler)
+            JwtSecurityTokenHandler tokenHandler,
+            UserContext userContext)
         {
             _serviceProvider = serviceProvider;
             _tokenHandler = tokenHandler;
+            _userContext = userContext;
 
             _securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.SecretKey));
             _credentials = new SigningCredentials(_securityKey, SecurityAlgorithms.HmacSha512);
@@ -72,19 +75,16 @@ namespace core.Services
             {
                 throw new InvalidTokenException("Unable to validate token and its claims.", ex);
             }
-
-            using var scope = _serviceProvider.CreateScope();
-            var userContext = scope.ServiceProvider.GetRequiredService<UserContext>();
             
-            userContext.Fill(new ContextData
+            _userContext.Fill(new ContextData
             {
                 UserId = Guid.Parse(claims.FindFirst("UserId")!.Value),
-                UserName = claims.FindFirst("UserEmail")!.Value,
+                UserName = claims.FindFirst("UserName")!.Value,
                 SubscriptionModel = claims.FindFirst("Subscription")!.Value switch
                 {
-                    "1" => ClassificationModel.FREE,
-                    "2" => ClassificationModel.INTERMEDIATE,
-                    "3" => ClassificationModel.ADVANCED,
+                    "FREE" => ClassificationModel.FREE,
+                    "INTERMEDIATE" => ClassificationModel.INTERMEDIATE,
+                    "ADVANCED" => ClassificationModel.ADVANCED,
                     _ => throw new Exception("Enum conversion error."),
                 },
             });

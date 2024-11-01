@@ -16,6 +16,11 @@ namespace core.Services
 
         public async Task<OutboundClassification> Classify(ClassifyPayload payload)
         {
+            if (payload.Image == null || payload.Image.Length == 0)
+            {
+                throw new Exception();
+            }
+
             using var formData = new MultipartFormDataContent();
 
             string model = _userContext.SubscriptionModel switch
