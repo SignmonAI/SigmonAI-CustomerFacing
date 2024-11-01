@@ -20,6 +20,7 @@ namespace core.Middlewares
                 InvalidHeadersException e => new Error(StatusCodes.Status400BadRequest, e.Message),
                 InvalidTokenException e => new Error(StatusCodes.Status400BadRequest, e.Message),
                 NotFoundException e => new Error(StatusCodes.Status404NotFound, e.Message),
+                UnauthorizedUserException e => new Error(StatusCodes.Status401Unauthorized, e.Message),
                 UpsertFailException e => new Error(StatusCodes.Status500InternalServerError, e.Message),
                 _ => new Error(StatusCodes.Status500InternalServerError, "Unknown server error.")
             };

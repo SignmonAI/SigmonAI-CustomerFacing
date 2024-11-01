@@ -21,7 +21,7 @@ namespace core.Controllers
             return result switch
             {
                 LoginResult.Succeeded s => new OkObjectResult(jwtService.GenerateToken(s)),
-                LoginResult.Failed => Unauthorized(),
+                LoginResult.Failed => throw new UnauthorizedUserException("Invalid login or password."),
                 _ => throw new UnknownServerError(),
             };
         }
