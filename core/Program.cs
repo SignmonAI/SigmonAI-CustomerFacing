@@ -32,6 +32,12 @@ namespace core
 
             // app.UseHttpsRedirection();
 
+            app.UseCors(x => x
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .SetIsOriginAllowed(origin => true)
+                .AllowCredentials());
+
             app.UseExceptionHandler();
 
             app.UseMiddleware<AuthenticationMiddleware>();
@@ -118,6 +124,7 @@ namespace core
             services.AddProblemDetails();
 
             // Endpoint configuration
+            services.AddCors();
             services.AddControllers();
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen();
