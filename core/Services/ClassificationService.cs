@@ -42,8 +42,12 @@ namespace core.Services
 
             response.EnsureSuccessStatusCode();
 
-            return await response.Content.ReadFromJsonAsync<OutboundClassification>()
+            var result = await response.Content.ReadFromJsonAsync<OutboundClassification>()
                     ?? throw new ExternalResponseException("External API error.");
+
+            result.Model = _userContext.SubscriptionModel.ToString();
+
+            return result;
         }
     }
 }
