@@ -30,21 +30,27 @@ namespace core.Services.Factories
             },
         };
 
-        public async Task<Tier> CreateTier(ClassificationModel model)
+        public async Task<Tier> GetTier(ClassificationModel model)
         {
-            var result = model switch
+            var tier = await _repo.FetchByNumber(model);
+
+            Tier result;
+
+            if (tier is null)
             {
-                ClassificationModel.INTERMEDIATE => _tiers["Intermediate"],
-                ClassificationModel.ADVANCED => _tiers["Advanced"],
-                _ => _tiers["Free"]
-            };
+                result = model switch
+                {
+                    ClassificationModel.INTERMEDIATE => _tiers["Intermediate"],
+                    ClassificationModel.ADVANCED => _tiers["Advanced"],
+                    _ => _tiers["Free"]
+                };
 
-            bool exists = await _repo.ExistsByNumberId(result.ModelNumber);
+                await _repo.UpsertAsync(result);
 
-            if (!exists)
-                result = await _repo.UpsertAsync(result)
-                        ?? throw new UpsertFailException("Invalid tier state.");
-        
+                return result;
+            }
+
+            result = tier;
             return result;
         }
     }

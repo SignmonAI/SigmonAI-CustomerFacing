@@ -8,6 +8,15 @@ namespace core.Repositories
     {
         public UserRepository(SigmonDbContext context) : base(context) {}
 
+        public async Task<User?> FindByIdEagerAsync(Guid id)
+        {
+            var user = await _rootSet.Include(u => u.Subscription)
+                    .ThenInclude(s => s.Tier)
+                    .SingleOrDefaultAsync(u => u.Id.Equals(id));
+
+            return user;
+        }
+
         public async Task<User?> FindByEmailAsync(string email)
         {
             var user = await _rootSet.Include(u => u.Subscription)

@@ -42,7 +42,7 @@ namespace core.Services
 
             newUser.Subscription = new Subscription
             {
-                Tier = await _tierFactory.CreateTier(ClassificationModel.FREE)
+                Tier = await _tierFactory.GetTier(ClassificationModel.FREE)
             };
 
             var savedUser = await _repo.UpsertAsync(newUser)
@@ -107,10 +107,10 @@ namespace core.Services
                 Guid id,
                 UserChangeTierPayload payload)
         {
-            var user = await _repo.FindByIdAsync(id)
+            var user = await _repo.FindByIdEagerAsync(id)
                     ?? throw new NotFoundException("User not found.");
             
-            user.Subscription!.Tier = await _tierFactory.CreateTier(payload.NewTier);
+            user.Subscription!.Tier = await _tierFactory.GetTier(payload.NewTier);
 
             var savedUser = await _repo.UpsertAsync(user);
 

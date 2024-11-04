@@ -4,6 +4,6 @@ namespace core.Services.Factories
 {
     public interface ITierFactory
     {
-        Task<Tier> CreateTier(ClassificationModel model);
+        Task<Tier> GetTier(ClassificationModel model);
     }
 }
