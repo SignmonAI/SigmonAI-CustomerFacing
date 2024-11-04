@@ -25,5 +25,21 @@ namespace core.Controllers
                 _ => throw new UnknownServerError(),
             };
         }
+
+        [HttpPost]
+        [Route("update-token")]
+        public async Task<IActionResult> UpdateToken(
+                [FromServices] LoginService loginService,
+                [FromServices] JwtService jwtService)
+        {
+            var result = await loginService.UpdateToken();
+
+            return result switch
+            {
+                LoginResult.Succeeded s => new OkObjectResult(jwtService.GenerateToken(s)),
+                LoginResult.Failed => throw new UnauthorizedUserException("Invalid login or password."),
+                _ => throw new UnknownServerError(),
+            };
+        }
     }
 }

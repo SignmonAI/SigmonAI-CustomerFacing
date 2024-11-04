@@ -1,3 +1,4 @@
+using core.Data.Contexts;
 using core.Data.Outbound;
 using core.Data.Payloads;
 using core.Errors;
@@ -7,9 +8,12 @@ using Microsoft.AspNetCore.Identity;
 
 namespace core.Services
 {
-    public class LoginService(UserRepository repo)
+    public class LoginService(
+            UserRepository repo,
+            IServiceProvider services)
     {
         private readonly UserRepository _repo = repo;
+        private readonly IServiceProvider _services = services;
         private readonly PasswordHasher<User> _hasher = new();
 
         public async Task<LoginResult> TryLogin(LoginPayload payload)
@@ -40,6 +44,21 @@ namespace core.Services
             };
         }
 
-        // public async Task<LoginResult> UpdateToken
+        public async Task<LoginResult> UpdateToken()
+        {
+            var userContext = _services.GetRequiredService<UserContext>();
+
+            var user = await _repo.FindByIdEagerAsync(userContext.UserId);
+            
+            if (user is null)
+                return new LoginResult.Failed();
+            
+            return new LoginResult.Succeeded()
+            {
+                UserId = user.Id,
+                UserName = user.Name!,
+                Subscription = user.Subscription!.Tier!.ModelNumber,
+            };
+        }
     }
 }
