@@ -88,8 +88,6 @@ namespace core.Services
                     _ => throw new Exception("Enum conversion error."),
                 },
             });
-
-            System.Console.WriteLine(_userContext);
         }
     }
 }
